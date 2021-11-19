@@ -6,6 +6,7 @@ import cmu.pasta.mu2.diff.Mu2;
 import com.pholser.junit.quickcheck.From;
 import edu.berkeley.cs.jqf.examples.common.AsciiStringGenerator;
 import org.apache.commons.cli.*;
+import org.junit.Assume;
 import org.junit.runner.RunWith;
 
 
@@ -13,15 +14,17 @@ import org.junit.runner.RunWith;
 public class CommonsCLITest {
 
     @Diff
-    public CommandLine testCommonsCLIParser(@From(OptionsGenerator.class) Options options, @From(AsciiStringGenerator.class) String input) throws ParseException {
+    public CommandLine testCommonsCLIParser(@From(OptionsGenerator.class) Options options, @From(AsciiStringGenerator.class) String input) {
         String[] args = new String[] { input };
         CommandLineParser parser = new DefaultParser();
+        CommandLine cmd = null;
         try {
-            CommandLine cmd = parser.parse(options, args);
+            cmd = parser.parse(options, args);
             return cmd;
         } catch(ParseException e) {
-            return null;
+            Assume.assumeNoException(e);
         }
+        return cmd;
     }
 
 }

@@ -6,6 +6,7 @@ import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import edu.berkeley.cs.jqf.examples.common.AsciiStringGenerator;
+import org.junit.Assume;
 
 public class OptionsGenerator extends Generator<Options> {
 
@@ -24,18 +25,25 @@ public class OptionsGenerator extends Generator<Options> {
         Options options = new Options();
         for (int i = 0; i < numOptions; i++) {
             Option option = generateOption(random, status);
-            options.addOption(generateOption(random, status));
+            if (option != null) {
+                options.addOption(generateOption(random, status));
+            }
         }
         return options;
     }
 
     public Option generateOption(SourceOfRandomness random, GenerationStatus status) {
-        Option option = new Option(
-                stringGenerator.generate(random, status),
-                stringGenerator.generate(random, status),
-                random.nextBoolean(),
-                stringGenerator.generate(random, status)
-        );
+        Option option = null;
+        try {
+            option = new Option(
+                    stringGenerator.generate(random, status),
+                    stringGenerator.generate(random, status),
+                    random.nextBoolean(),
+                    stringGenerator.generate(random, status)
+            );
+        } catch (IllegalArgumentException e) {
+            Assume.assumeNoException(e);
+        }
         return option;
     }
 

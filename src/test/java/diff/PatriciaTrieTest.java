@@ -15,9 +15,6 @@ import org.junit.runner.RunWith;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assume.assumeTrue;
 
-/**
- * @author Rohan Padhye
- */
 @RunWith(Mu2.class)
 public class PatriciaTrieTest {
 

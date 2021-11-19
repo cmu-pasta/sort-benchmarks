@@ -57,7 +57,6 @@ public class DiffTest {
 
     @Comparison
     public static Boolean compare(List l1, List l2) {
-        //System.out.println("comparing " + l1 + " to " + l2);
         if(l1 == null || l2 == null) return false;
         if(l1.size() != l2.size()) return false;
         for(int c = 0; c < l1.size(); c++) {
@@ -68,7 +67,6 @@ public class DiffTest {
 
     @Comparison
     public static Boolean noncompare(List l1, List l2) {
-        //System.out.println("noncomparing " + l1 + " to " + l2);
         return true;
     }
 }

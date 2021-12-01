@@ -13,7 +13,7 @@ import org.junit.runner.RunWith;
 @RunWith(Mu2.class)
 public class CommonsCLITest {
 
-    @Diff
+    @Diff(cmp = "compare")
     public CommandLine testCommonsCLIParser(@From(OptionsGenerator.class) Options options, @From(AsciiStringGenerator.class) String input) {
         String[] args = new String[] { input };
         CommandLineParser parser = new DefaultParser();
@@ -25,6 +25,11 @@ public class CommonsCLITest {
             Assume.assumeNoException(e);
         }
         return cmd;
+    }
+
+    @Comparison
+    public static Boolean compare(CommandLine cmd1, CommandLine cmd2) {
+        return cmd1.equals(cmd2);
     }
 
 }

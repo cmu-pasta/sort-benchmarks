@@ -5,6 +5,7 @@ import cmu.pasta.mu2.diff.Diff;
 import cmu.pasta.mu2.diff.Mu2;
 import com.pholser.junit.quickcheck.generator.InRange;
 import com.pholser.junit.quickcheck.generator.Size;
+import edu.berkeley.cs.jqf.fuzz.Fuzz;
 import org.junit.runner.RunWith;
 import sort.BubbleSort;
 import sort.TimSort;
@@ -26,6 +27,12 @@ public class DiffTest {
         List<Integer> toReturn = new BubbleSort().sort(input);
         return toReturn;
     }
+
+    @Fuzz
+    public void fuzzBubbleSort(@Size(max=MAX_SIZE) List<@InRange(minInt=MIN_ELEMENT, maxInt=MAX_ELEMENT) Integer> input) {
+        List<Integer> toReturn = new BubbleSort().sort(input);
+    }
+
 
     @Diff(cmp = "noncompare")
     public List<Integer> otherBubbleSort(@Size(max=MAX_SIZE) List<@InRange(minInt=MIN_ELEMENT, maxInt=MAX_ELEMENT) Integer> input) {
@@ -55,6 +62,11 @@ public class DiffTest {
         return null;
     }
 
+    @Fuzz
+    public void fuzzTimSort(@Size(max=MAX_SIZE) List<@InRange(minInt=MIN_ELEMENT, maxInt=MAX_ELEMENT) Integer> input) {
+        testSort(new TimSort(), input);
+    }
+
     @Comparison
     public static Boolean compare(List l1, List l2) {
         if(l1 == null || l2 == null) return false;
@@ -69,4 +81,5 @@ public class DiffTest {
     public static Boolean noncompare(List l1, List l2) {
         return true;
     }
+
 }

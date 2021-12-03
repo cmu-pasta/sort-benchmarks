@@ -8,6 +8,7 @@ import java.util.List;
 
 import com.pholser.junit.quickcheck.From;
 import edu.berkeley.cs.jqf.examples.common.AsciiStringGenerator;
+import edu.berkeley.cs.jqf.fuzz.Fuzz;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
@@ -20,6 +21,11 @@ public class CommonsCSVTest {
     public List<CSVRecord> testCSVParser(@From(AsciiStringGenerator.class) String input) throws IOException {
         CSVParser parser = CSVParser.parse(input, CSVFormat.EXCEL);
         return parser.getRecords();
+    }
+
+    @Fuzz
+    public void fuzzCSVParser(@From(AsciiStringGenerator.class) String input) throws IOException {
+        CSVParser.parse(input, CSVFormat.EXCEL);
     }
 
 }

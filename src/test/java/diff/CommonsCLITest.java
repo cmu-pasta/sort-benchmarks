@@ -22,7 +22,7 @@ public class CommonsCLITest {
         String[] args = new String[] { input };
         CommandLine cmd = null;
         try {
-            cmd = parser.parse(new Options(), args);
+            cmd = parser.parse(options, args);
         } catch(ParseException e) {
             Assume.assumeNoException(e);
         }

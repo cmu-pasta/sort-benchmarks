@@ -40,12 +40,13 @@ public class AntTest {
         return path.toFile();
     }
 
-    public void testWithInputStream(InputStream in) {
+    public NewProject testWithInputStream(InputStream in) {
         File buildXml = null;
+        NewProject project = new NewProject();
         try {
             buildXml = serializeInputStream(in);
             ProjectHelperImpl p = new ProjectHelperImpl();
-            p.parse(new Project(), buildXml);
+            p.parse(project, buildXml);
         } catch (IOException e) {
             throw new RuntimeException(e);
         } catch (BuildException e) {
@@ -55,6 +56,7 @@ public class AntTest {
                 buildXml.delete();
             }
         }
+        return project;
     }
 
     @Fuzz
@@ -70,10 +72,19 @@ public class AntTest {
         testWithInputStream(XMLDocumentUtils.documentToInputStream(dom));
     }
 
-    @Diff
-    public Object testWithGenerator(@From(XmlDocumentGenerator.class)
+    @Diff(cmp = "compare")
+    public NewProject testWithGenerator(@From(XmlDocumentGenerator.class)
                                       @Dictionary("dictionaries/ant-project.dict") Document dom) {
-        testWithInputStream(XMLDocumentUtils.documentToInputStream(dom));
-        return null;
+        NewProject p = testWithInputStream(XMLDocumentUtils.documentToInputStream(dom));
+        return p;
+    }
+
+    @Comparison
+    public static Boolean compare(NewProject p1, NewProject p2) {
+      return
+        p1.getProperties().equals(p2.getProperties()) &&
+        p1.getDefaultTarget().equals(p2.getDefaultTarget()) &&
+        p1.getName().equals(p2.getName()) &&
+        p1.getDescription().equals(p2.getDescription());
     }
 }

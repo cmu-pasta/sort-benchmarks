@@ -33,7 +33,13 @@ public class CommonsCSVTest {
 
     @Fuzz
     public void fuzzCSVParser(@From(AsciiStringGenerator.class) String input) throws IOException {
-        CSVParser.parse(input, CSVFormat.EXCEL);
+        List<CSVRecord> records = null;
+        try {
+            CSVParser parser = CSVParser.parse(input, CSVFormat.EXCEL);
+            records = parser.getRecords();
+        } catch (IOException e) {
+            Assume.assumeNoException(e);
+        }
     }
 
 }

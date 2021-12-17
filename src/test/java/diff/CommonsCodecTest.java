@@ -5,6 +5,7 @@ import cmu.pasta.mu2.diff.Diff;
 import cmu.pasta.mu2.diff.Mu2;
 import com.pholser.junit.quickcheck.From;
 import edu.berkeley.cs.jqf.examples.common.AsciiStringGenerator;
+import edu.berkeley.cs.jqf.fuzz.Fuzz;
 import org.junit.runner.RunWith;
 import org.apache.commons.codec.binary.*;
 
@@ -19,6 +20,12 @@ public class CommonsCodecTest {
     public String testEncodeDecode(@From(AsciiStringGenerator.class) String input) {
         byte[] encoded = base64.encode(input.getBytes());
         String decoded = new String(base64.decode(encoded));
-        return decoded;
+        return new String(encoded);
+    }
+
+    @Fuzz
+    public void fuzzEncodeDecode(@From(AsciiStringGenerator.class) String input) {
+        byte[] encoded = base64.encode(input.getBytes());
+        String decoded = new String(base64.decode(encoded));
     }
 }

@@ -18,7 +18,7 @@ public class CommonsCLITest {
     private CommandLineParser parser = new DefaultParser();
 
     @Diff
-    public CommandLine testCommonsCLIParser(@From(OptionsGenerator.class) Options options, @From(AsciiStringGenerator.class) String input) {
+    public CommandLine testParser(@From(OptionsGenerator.class) Options options, @From(AsciiStringGenerator.class) String input) {
         String[] args = new String[] { input };
         CommandLine cmd = null;
         try {
@@ -30,7 +30,7 @@ public class CommonsCLITest {
     }
 
     @Fuzz
-    public void testParserFuzz(@From(OptionsGenerator.class) Options options, @From(AsciiStringGenerator.class) String input) {
+    public void fuzzParser(@From(OptionsGenerator.class) Options options, @From(AsciiStringGenerator.class) String input) {
         String[] args = new String[] { input };
         CommandLine cmd = null;
         try {

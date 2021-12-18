@@ -20,7 +20,7 @@ public class CommonsCodecTest {
     public String testEncodeDecode(@From(AsciiStringGenerator.class) String input) {
         byte[] encoded = base64.encode(input.getBytes());
         String decoded = new String(base64.decode(encoded));
-        return new String(encoded);
+        return decoded;
     }
 
     @Fuzz

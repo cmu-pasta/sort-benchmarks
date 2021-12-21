@@ -8,7 +8,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import com.pholser.junit.quickcheck.From;
 import edu.berkeley.cs.jqf.examples.common.AsciiStringGenerator;
-import edu.berkeley.cs.jqf.examples.xml.XmlDocumentGenerator;
+import edu.berkeley.cs.jqf.fuzz.Fuzz;
 import org.junit.Assume;
 import org.junit.runner.RunWith;
 import org.w3c.dom.Document;
@@ -24,8 +24,18 @@ public class JacksonDatabindTest{
         try {
             output = objectMapper.readValue(input, Object.class);
         } catch (JsonProcessingException e) {
-//            Assume.assumeNoException(e);
+           Assume.assumeNoException(e);
         }
         return output;
+    }
+
+    @Fuzz
+    public void fuzzJsonReadValue(@From(AsciiStringGenerator.class) String input) {
+        Object output = null;
+        try {
+            output = objectMapper.readValue(input, Object.class);
+        } catch (JsonProcessingException e) {
+           Assume.assumeNoException(e);
+        }
     }
 }

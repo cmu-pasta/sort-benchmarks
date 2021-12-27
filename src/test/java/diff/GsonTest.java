@@ -9,16 +9,18 @@ import com.google.gson.JsonIOException;
 import com.google.gson.JsonSyntaxException;
 import com.pholser.junit.quickcheck.From;
 import edu.berkeley.cs.jqf.examples.common.AsciiStringGenerator;
+import edu.berkeley.cs.jqf.fuzz.Fuzz;
 import org.junit.Assume;
 import org.junit.runner.RunWith;
 
 @RunWith(Mu2.class)
 public class GsonTest {
 
+    private GsonBuilder builder = new GsonBuilder();
+    private Gson gson = builder.setLenient().create();
+
     @Diff
     public Object testJSONParser(@From(AsciiStringGenerator.class) String input) {
-        GsonBuilder builder = new GsonBuilder();
-        Gson gson = builder.setLenient().create();
         Object out = null;
         try {
             out = gson.fromJson(input, Object.class);
@@ -28,6 +30,18 @@ public class GsonTest {
             Assume.assumeNoException(e);
         }
         return out;
+    }
+
+    @Fuzz
+    public void fuzzJSONParser(@From(AsciiStringGenerator.class) String input) {
+        Object out = null;
+        try {
+            out = gson.fromJson(input, Object.class);
+        } catch (JsonSyntaxException e) {
+            Assume.assumeNoException(e);
+        } catch (JsonIOException e) {
+            Assume.assumeNoException(e);
+        }
     }
 
 }

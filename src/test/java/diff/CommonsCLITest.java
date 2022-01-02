@@ -6,9 +6,13 @@ import cmu.pasta.mu2.diff.Mu2;
 import com.pholser.junit.quickcheck.From;
 import edu.berkeley.cs.jqf.examples.common.AsciiStringGenerator;
 import edu.berkeley.cs.jqf.fuzz.Fuzz;
-import edu.berkeley.cs.jqf.fuzz.JQF;
-import org.apache.commons.cli.*;
+import org.apache.commons.cli.CommandLineParser;
+import org.apache.commons.cli.DefaultParser;
+import org.apache.commons.cli.CommandLine;
+import org.apache.commons.cli.Options;
+import org.apache.commons.cli.ParseException;
 import org.junit.Assume;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import java.util.Arrays;
@@ -17,6 +21,22 @@ import java.util.Objects;
 
 @RunWith(Mu2.class)
 public class CommonsCLITest {
+
+    @Test
+    public void test() {
+        //[ Options: [ short {} ] [ long {} ], -={"
+        //causes StringOutOfBoundsException: begin 0, end 1, length 0
+        //  at java.base/java.lang.String.checkBoundsBeginEnd(String.java:3734)
+        //	at java.base/java.lang.String.substring(String.java:1903)
+        //	at org.apache.commons.cli.DefaultParser.isJavaProperty(DefaultParser.java:583)
+        Options options = new Options();
+        String[] args = {"-={\""};
+        try {
+            parser.parse(options, args);
+        } catch(ParseException e) {
+            Assume.assumeNoException(e);
+        }
+    }
 
     private CommandLineParser parser = new DefaultParser();
 

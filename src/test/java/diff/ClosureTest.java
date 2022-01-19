@@ -69,6 +69,11 @@ public class ClosureTest {
         return testWithString(code);
     }
 
+    @Fuzz
+    public void fuzzWithGenerator(@From(JavaScriptCodeGenerator.class) String code) {
+        testWithString(code);
+    }
+
 
     @Comparison
     public static Boolean compare(Result r1, Result r2) {

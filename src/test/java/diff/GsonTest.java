@@ -32,7 +32,7 @@ public class GsonTest {
         return out;
     }
 
-    @Fuzz
+    @Fuzz(repro="${repro}")
     public void fuzzJSONParser(@From(AsciiStringGenerator.class) String input) {
         Object out = null;
         try {

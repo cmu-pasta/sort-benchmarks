@@ -53,31 +53,26 @@ public class ClosureTest {
         CompilationLevel.SIMPLE_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
     }
 
-    private Result doCompile(SourceFile input) {
+    private void doCompile(SourceFile input) {
         Result result = compiler.compile(externs, input, options);
         Assume.assumeTrue(result.success);
-        return result;
     }
 
-    public Result testWithString(@From(AsciiStringGenerator.class) String code) {
+    public void testWithString(@From(AsciiStringGenerator.class) String code) {
         SourceFile input = SourceFile.fromCode("input", code);
-        return doCompile(input);
+        doCompile(input);
     }
 
-    @Diff(cmp = "compare")
-    public Result testWithGenerator(@From(JavaScriptCodeGenerator.class) String code) {
-        return testWithString(code);
+    @Diff
+    public String testWithGenerator(@From(JavaScriptCodeGenerator.class) String code) {
+        testWithString(code);
+        return compiler.toSource();
     }
 
-    @Fuzz
+    @Fuzz(repro="${repro}")
     public void fuzzWithGenerator(@From(JavaScriptCodeGenerator.class) String code) {
         testWithString(code);
-    }
-
-
-    @Comparison
-    public static Boolean compare(Result r1, Result r2) {
-        return r1.equals(r2);
+        compiler.toSource();
     }
 
 }

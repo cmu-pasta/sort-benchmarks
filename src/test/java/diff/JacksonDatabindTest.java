@@ -29,7 +29,7 @@ public class JacksonDatabindTest{
         return output;
     }
 
-    @Fuzz
+    @Fuzz(repro="${repro}")
     public void fuzzJsonReadValue(@From(AsciiStringGenerator.class) String input) {
         Object output = null;
         try {

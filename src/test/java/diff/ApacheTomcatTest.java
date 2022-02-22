@@ -40,7 +40,7 @@ public class ApacheTomcatTest {
         return webXml.toXml();
     }
 
-    @Fuzz
+    @Fuzz(repro="${repro}")
     public void fuzzWithGenerator(@From(XmlDocumentGenerator.class) @Dictionary("dictionaries/tomcat-webxml.dict") Document dom) {
         testWithInputStream(XMLDocumentUtils.documentToInputStream(dom));
     }

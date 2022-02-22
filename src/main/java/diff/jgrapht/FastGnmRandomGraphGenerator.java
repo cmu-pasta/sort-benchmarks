@@ -35,6 +35,7 @@ import java.util.Random;
 import org.jgrapht.Graph;
 import org.jgrapht.generate.GraphGenerator;
 import org.jgrapht.graph.DefaultDirectedGraph;
+import org.jgrapht.graph.SimpleDirectedGraph;
 
 /**
  * @author Rohan Padhye
@@ -81,7 +82,7 @@ public class FastGnmRandomGraphGenerator<V, E, T> implements GraphGenerator<V, E
         }
 
         // Collect ALL edges into a list
-        boolean isDirected = graph instanceof DefaultDirectedGraph;
+        boolean isDirected = graph instanceof DefaultDirectedGraph || graph instanceof SimpleDirectedGraph;
         int maxEdges = numEdges(isDirected, loops);
         if (m > maxEdges) {
             throw new IllegalArgumentException("Cannot generate " + m + " edges; " +

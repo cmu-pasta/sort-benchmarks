@@ -26,12 +26,14 @@
 // * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 // */
-//package edu.berkeley.cs.jqf.examples.jgrapht;
+//package diff.jgrapht;
 //
 //import com.pholser.junit.quickcheck.generator.GenerationStatus;
 //import com.pholser.junit.quickcheck.generator.Generator;
 //import com.pholser.junit.quickcheck.random.SourceOfRandomness;
-//import org.jgrapht.DirectedGraph;
+//import diff.jgrapht.GraphModel;
+//import diff.jgrapht.ModelBasedGraphGenerator;
+//import org.jgrapht.graph.DefaultDirectedGraph;
 //
 ///**
 // * Quick-check generator for JGraphT graphs using the
@@ -39,12 +41,12 @@
 // *
 // * @author Rohan Padhye
 // */
-//public class ModelBasedDirectedGraphGenerator extends Generator<DirectedGraph> {
+//public class ModelBasedDirectedGraphGenerator extends Generator<DefaultDirectedGraph> {
 //
 //    private GraphModel model;
 //
 //    public ModelBasedDirectedGraphGenerator() {
-//        super(DirectedGraph.class);
+//        super(DefaultDirectedGraph.class);
 //    }
 //
 //    public void configure(GraphModel model) {
@@ -52,10 +54,10 @@
 //    }
 //
 //    @Override
-//    public DirectedGraph generate(SourceOfRandomness sourceOfRandomness, GenerationStatus generationStatus) {
+//    public DefaultDirectedGraph generate(SourceOfRandomness sourceOfRandomness, GenerationStatus generationStatus) {
 //        ModelBasedGraphGenerator graphGenerator = new ModelBasedGraphGenerator();
 //        graphGenerator.configure(model);
 //        graphGenerator.setDirected(true);
-//        return (DirectedGraph) graphGenerator.generate(sourceOfRandomness, generationStatus);
+//        return (DefaultDirectedGraph) graphGenerator.generate(sourceOfRandomness, generationStatus);
 //    }
 //}

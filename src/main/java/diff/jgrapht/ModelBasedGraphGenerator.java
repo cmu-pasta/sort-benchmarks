@@ -51,8 +51,8 @@ import org.jgrapht.graph.DirectedWeightedMultigraph;
 import org.jgrapht.graph.DirectedMultigraph;
 import org.jgrapht.graph.WeightedMultigraph;
 import org.jgrapht.graph.Multigraph;
-import org.jgrapht.graph.SimpleDirectedWeightedGraph;
-import org.jgrapht.graph.SimpleDirectedGraph;
+import org.jgrapht.graph.DefaultDirectedWeightedGraph;
+import org.jgrapht.graph.DefaultDirectedGraph;
 import org.jgrapht.graph.SimpleGraph;
 import org.jgrapht.util.SupplierUtil;
 
@@ -154,9 +154,9 @@ public class ModelBasedGraphGenerator extends Generator<Graph> {
             } else {
                 if (isDirected()) {
                     if (model.weighted()) {
-                        return new SimpleDirectedWeightedGraph<>(edgeClass);
+                        return new DefaultDirectedWeightedGraph<>(edgeClass);
                     } else {
-                        return new SimpleDirectedGraph<>(edgeClass);
+                        return new DefaultDirectedGraph<>(edgeClass);
                     }
                 } else {
                     if (model.weighted()) {

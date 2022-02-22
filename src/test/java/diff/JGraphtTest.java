@@ -28,21 +28,65 @@
  */
 package diff;
 
+import com.pholser.junit.quickcheck.From;
 import diff.jgrapht.GraphModel;
+import diff.jgrapht.ModelBasedGraphGenerator;
 import edu.berkeley.cs.jqf.fuzz.Fuzz;
 import edu.berkeley.cs.jqf.fuzz.JQF;
 import org.jgrapht.Graph;
+import org.jgrapht.GraphTests;
+import org.jgrapht.alg.shortestpath.BellmanFordShortestPath;
+import org.jgrapht.alg.shortestpath.DijkstraShortestPath;
 import org.junit.Assert;
+import org.junit.Assume;
 import org.junit.runner.RunWith;
 
 /**
  * @author Rohan Padhye
  */
 @RunWith(JQF.class)
-public class WeightedGraphTest {
+public class JGraphtTest {
+
+    //shortest path tests
 
     @Fuzz
-    public void checkWeights(@GraphModel(nodes=4, weighted=true) Graph graph) {
+    public void bellmanFord(@From(ModelBasedGraphGenerator.class) @GraphModel(nodes=10, weighted=true) Graph graph) {
+        new BellmanFordShortestPath<>(graph).getPaths(1);
+    }
+
+    @Fuzz
+    public void dijkstra(@From(ModelBasedGraphGenerator.class) @GraphModel(nodes=10, weighted=true) Graph graph) {
+        new DijkstraShortestPath<>(graph).getPaths(1);
+    }
+
+    //simple graph tests
+
+    @Fuzz
+    public void simple(@From(ModelBasedGraphGenerator.class) @GraphModel(nodes=20, edges=1) Graph graph) {
+        Assume.assumeFalse(GraphTests.isEmpty(graph));
+        Assert.assertTrue(GraphTests.isSimple(graph));
+    }
+
+    @Fuzz
+    public void empty(@From(ModelBasedGraphGenerator.class) @GraphModel(nodes=20, edges=0, p=0.0) Graph graph) {
+        Assert.assertTrue(GraphTests.isEmpty(graph));
+    }
+
+    @Fuzz
+    public void nonEmpty(@From(ModelBasedGraphGenerator.class) @GraphModel(nodes=20, edges=100) Graph graph) {
+        //System.out.println(graph.edgeSet().size()); //TODO this is 190 = 20 choose 2, which is why edgeCount is breaking
+        Assert.assertFalse(GraphTests.isEmpty(graph));
+    }
+
+    //@Fuzz
+    public void edgeCount(@From(ModelBasedGraphGenerator.class) @GraphModel(nodes=20, edges=100) Graph graph) {
+        Assert.assertTrue(graph.edgeSet().size() == 100);
+    }
+
+    //weighted graph test
+
+    @Fuzz
+    public void checkWeights(@From(ModelBasedGraphGenerator.class) @GraphModel(nodes=4, weighted=true) Graph graph) {
         graph.edgeSet().forEach((e) ->
                 Assert.assertTrue(graph.getEdgeWeight(e) >= 0 &&
                         graph.getEdgeWeight(e) < 1.0));

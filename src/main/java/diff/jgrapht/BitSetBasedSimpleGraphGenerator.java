@@ -35,6 +35,7 @@ import java.util.Random;
 import org.jgrapht.Graph;
 import org.jgrapht.generate.GraphGenerator;
 import org.jgrapht.graph.DefaultDirectedGraph;
+import org.jgrapht.graph.SimpleDirectedGraph;
 
 /**
  * @author Rohan Padhye
@@ -63,7 +64,7 @@ public class BitSetBasedSimpleGraphGenerator<V, E> implements GraphGenerator<V, 
     @Override
     public void generateGraph(Graph<V, E> graph, Map<String, V> map) {
         // Calculate number of edges to generate
-        boolean isDirected = graph instanceof DefaultDirectedGraph;
+        boolean isDirected = graph instanceof DefaultDirectedGraph || graph instanceof SimpleDirectedGraph;
         int numEdges = numEdges(isDirected);
 
         // Figure out how many random bytes to generate for this purpose

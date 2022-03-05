@@ -21,6 +21,7 @@
             <groupId>edu.berkeley.cs.jqf</groupId>
             <artifactId>jqf-examples</artifactId>
             <version>1.9</version>
+            <type>test-jar</type>
         </dependency>
         <dependency>
             <groupId>cmu.pasta</groupId>

@@ -94,6 +94,11 @@ public class SortTest {
         testSort(new TimSort(), input);
     }
 
+    @Fuzz
+    public void testParallelSort(@Size(max=MAX_SIZE) List<@InRange(minInt=MIN_ELEMENT, maxInt=MAX_ELEMENT) Integer> input) {
+        testSort(new ParallelSort(), input);
+    }
+
     public static <T extends Comparable<T>> void testSort(SortAlgorithm algorithm, List<T> input) {
         List<T> output = algorithm.sort(input);
         int n = input.size();

@@ -22,7 +22,7 @@ class ConcurrencyBytecode {
     public void seeSynchronizedX() throws InterruptedException {
         synchronized (x) { System.out.println(x); }
         synchronized (x) {
-            Thread.yield();
+            java.lang.Thread.yield();
             x = "X:Hello " + x;
         }
     }

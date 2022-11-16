@@ -13,7 +13,7 @@ public class SynchronizedBlocksTest {
         Thread t2 = new Thread(sb::block2);
         t1.start();
         t2.start();
-        Thread.sleep(8000);
+        java.lang.Thread.sleep(8000);
         System.out.println("x: " + sb.x);
     }
 }

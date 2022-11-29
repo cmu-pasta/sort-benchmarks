@@ -19,10 +19,14 @@ public class ScheduleGenerator extends Generator<Schedule> {
     public Schedule generate(SourceOfRandomness sourceOfRandomness, GenerationStatus generationStatus) {
         //TODO this is specific to AtomicityViolationTest
         List<ExecutionIndex> list = new ArrayList<>(List.of(
-                new ExecutionIndex(new int[]{0, 3, -469753850, 2, -469753850, 2}),
-                new ExecutionIndex(new int[]{0, 3, -469753849, 2, -469753849, 2})
-        ));
-        Collections.reverse(list);
+                new ExecutionIndex(new int[]{0, 3, -75489274, 1, -75489274, 2}),
+                new ExecutionIndex(new int[]{0, 3, -75489273, 1, -75489273, 2}),
+                new ExecutionIndex(new int[]{0, 3, -75489274, 1, -75489274, 2}),
+                new ExecutionIndex(new int[]{0, 3, -75489273, 1, -75489273, 2})
+                //new ExecutionIndex(new int[]{0, 3, -75489273, 1, -75489273, 2})
+        )); //do all the 74s and then the 73s to get non-violating
+        list.add(new ExecutionIndex(new int[]{0, 0, 0, 0, 0, 0}));
+        list.add(new ExecutionIndex(new int[]{0, 0, 0, 0, 0, 0}));
         return new Schedule(list);
     }
 }

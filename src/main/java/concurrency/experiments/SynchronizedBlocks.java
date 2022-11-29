@@ -1,4 +1,4 @@
-package concurrency;
+package concurrency.experiments;
 
 public class SynchronizedBlocks {
     public volatile int x = 0;

@@ -1,6 +1,6 @@
 package concurrency;
 
-import cmu.pasta.cdiff.ListConcurrencyClassLoader;
+import concurrency.experiments.ConcurrencyBytecode;
 import edu.berkeley.cs.jqf.fuzz.Fuzz;
 import edu.berkeley.cs.jqf.fuzz.JQF;
 import org.junit.runner.RunWith;

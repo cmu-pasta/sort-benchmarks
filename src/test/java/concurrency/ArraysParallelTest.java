@@ -2,6 +2,8 @@ package concurrency;
 
 import com.pholser.junit.quickcheck.generator.InRange;
 import com.pholser.junit.quickcheck.generator.Size;
+import concurrency.sort.ArrayPrefixHelpers;
+import concurrency.sort.DualPivotQuicksort;
 import edu.berkeley.cs.jqf.fuzz.Fuzz;
 import edu.berkeley.cs.jqf.fuzz.JQF;
 import org.junit.runner.RunWith;

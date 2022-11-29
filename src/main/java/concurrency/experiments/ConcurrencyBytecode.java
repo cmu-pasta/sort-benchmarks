@@ -1,12 +1,12 @@
-package concurrency;
+package concurrency.experiments;
 
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
 
-class ConcurrencyBytecode {
-    volatile String x;
-    String y;
+public class ConcurrencyBytecode {
+    public volatile String x;
+    public String y;
     AtomicInteger z;
     ReentrantLock testLock;
     Condition testCond;

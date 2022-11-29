@@ -1,17 +1,12 @@
 package concurrency;
 
-public class Thread {
-    private java.lang.Thread t;
-
+public class Thread extends java.lang.Thread {
     public Thread(Runnable r) {
-        t = new java.lang.Thread(r);
+        super(r);
     }
 
+    @Override
     public void start() {
-        t.start();
-    }
-
-    public java.lang.Thread getThread() {
-        return t;
+        super.start();
     }
 }

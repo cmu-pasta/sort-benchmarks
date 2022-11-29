@@ -23,7 +23,7 @@
  * questions.
  */
 
-package concurrency;
+package concurrency.sort;
 
 import java.util.Arrays;
 import java.util.concurrent.CountedCompleter;
@@ -49,7 +49,7 @@ import java.util.concurrent.RecursiveTask;
  *
  * @since 1.7 * 14
  */
-final class DualPivotQuicksort {
+public final class DualPivotQuicksort {
 
     /**
      * Prevents instantiation.
@@ -153,7 +153,7 @@ final class DualPivotQuicksort {
      * @param low the index of the first element, inclusive, to be sorted
      * @param high the index of the last element, exclusive, to be sorted
      */
-    static void sort(int[] a, int parallelism, int low, int high) {
+    public static void sort(int[] a, int parallelism, int low, int high) {
         int size = high - low;
 
         if (parallelism > 1 && size > MIN_PARALLEL_SORT_SIZE) {

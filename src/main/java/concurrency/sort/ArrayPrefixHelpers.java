@@ -33,7 +33,7 @@
  * http://creativecommons.org/publicdomain/zero/1.0/
  */
 
-package concurrency;
+package concurrency.sort;
 
 import java.util.concurrent.CountedCompleter;
 import java.util.concurrent.ForkJoinPool;
@@ -48,7 +48,7 @@ import java.util.function.LongBinaryOperator;
  * @author Doug Lea
  * @since 1.8
  */
-class ArrayPrefixHelpers {
+public class ArrayPrefixHelpers {
     private ArrayPrefixHelpers() {} // non-instantiable
 
     /*
@@ -102,7 +102,7 @@ class ArrayPrefixHelpers {
     /** The smallest subtask array partition size to use as threshold */
     static final int MIN_PARTITION = 16;
 
-    static final class CumulateTask<T> extends CountedCompleter<Void> {
+    public static final class CumulateTask<T> extends CountedCompleter<Void> {
         @SuppressWarnings("serial") // Not statically typed as Serializable
         final T[] array;
         @SuppressWarnings("serial") // Not statically typed as Serializable

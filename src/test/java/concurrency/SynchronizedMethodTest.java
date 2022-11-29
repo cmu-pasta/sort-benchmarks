@@ -1,5 +1,6 @@
 package concurrency;
 
+import concurrency.experiments.SynchronizedMethod;
 import edu.berkeley.cs.jqf.fuzz.JQF;
 import org.junit.Test;
 import org.junit.runner.RunWith;

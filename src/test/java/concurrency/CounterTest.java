@@ -26,6 +26,26 @@ public class CounterTest {
         concurrency.Thread t2 = new Thread(() -> cm.putOrDecrement(s));
         t1.start();
         t2.start();
+        t1.join();
+        t2.join();
+        assertEquals(0, cm.getValue(s));
+    }
+
+    @Fuzz
+    public void testIncDecNoArgs(String s) throws InterruptedException {
+        System.out.println("starting testIncDec");
+        CounterMap cm = new CounterMap();
+
+        concurrency.Thread t1 = new Thread(() -> {
+            cm.putOrIncrement(s);
+        });
+        concurrency.Thread t2 = new Thread(() -> {
+            cm.putOrDecrement(s);
+        });
+        t1.start();
+        t2.start();
+        t1.join();
+        t2.join();
         synchronized (DEFAULT_KEY) {
             System.out.println("done waiting");
         }

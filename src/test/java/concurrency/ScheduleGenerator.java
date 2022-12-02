@@ -18,15 +18,14 @@ public class ScheduleGenerator extends Generator<Schedule> {
     @Override
     public Schedule generate(SourceOfRandomness sourceOfRandomness, GenerationStatus generationStatus) {
         //TODO this is specific to AtomicityViolationTest
-        List<ExecutionIndex> list = new ArrayList<>(List.of(
-                new ExecutionIndex(new int[]{0, 3, -75489274, 1, -75489274, 2}),
-                new ExecutionIndex(new int[]{0, 3, -75489273, 1, -75489273, 2}),
-                new ExecutionIndex(new int[]{0, 3, -75489274, 1, -75489274, 2}),
-                new ExecutionIndex(new int[]{0, 3, -75489273, 1, -75489273, 2})
+        ExecutionIndex t1Ind = new ExecutionIndex(new int[]{0, 3, -75489274, 1, -75489274, 2}), t2Ind = new ExecutionIndex(new int[]{0, 3, -75489273, 1, -75489273, 2});
+        List<ExecutionIndex> list = new ArrayList<>(List.of(t2Ind, t2Ind, t1Ind, t1Ind, t1Ind
                 //new ExecutionIndex(new int[]{0, 3, -75489273, 1, -75489273, 2})
         )); //do all the 74s and then the 73s to get non-violating
         list.add(new ExecutionIndex(new int[]{0, 0, 0, 0, 0, 0}));
-        list.add(new ExecutionIndex(new int[]{0, 0, 0, 0, 0, 0}));
+        //list.add(new ExecutionIndex(new int[]{0, 0, 0, 0, 0, 0}));
         return new Schedule(list);
-    }
+    } //TODO write integration tests for all four possibilities (-1<->0, 1<->0, 0 w/t1 first, 0 w/t2 first)
+    //(freeze implementation to get reproducibility for ^)
+    //TODO new schedule/schedulegenerator: list of indexes into sorted-known-threads when sorted-known-threads is sorted by execution index
 }

@@ -5,9 +5,9 @@ import edu.berkeley.cs.jqf.fuzz.JQF;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-@RunWith(JQF.class)
+//@RunWith(JQF.class)
 public class SynchronizedMethodTest {
-    @Test
+    //@Test
     public void test() throws InterruptedException {
         SynchronizedMethod sm1 = new SynchronizedMethod();
         SynchronizedMethod sm2 = new SynchronizedMethod();

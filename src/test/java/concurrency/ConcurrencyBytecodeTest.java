@@ -5,11 +5,11 @@ import edu.berkeley.cs.jqf.fuzz.Fuzz;
 import edu.berkeley.cs.jqf.fuzz.JQF;
 import org.junit.runner.RunWith;
 
-@RunWith(JQF.class)
+//@RunWith(JQF.class)
 public class ConcurrencyBytecodeTest {
     protected static final int MAX_SIZE = 160;
 
-    @Fuzz
+    //@Fuzz
     public void testConcurrencyBytecode(String forX, String forY, Integer forZ) {
         ConcurrencyBytecode cb = new ConcurrencyBytecode(forX, forY, forZ);
 

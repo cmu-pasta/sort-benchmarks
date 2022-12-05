@@ -5,9 +5,9 @@ import edu.berkeley.cs.jqf.fuzz.JQF;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-@RunWith(JQF.class)
+//@RunWith(JQF.class)
 public class SynchronizedBlocksTest {
-    @Test
+    //@Test
     public void test() throws InterruptedException {
         SynchronizedBlocks sb = new SynchronizedBlocks();
         Thread t1 = new Thread(sb::block1);

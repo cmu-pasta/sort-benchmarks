@@ -14,13 +14,13 @@ import java.util.concurrent.ForkJoinPool;
 import static org.junit.Assert.assertEquals;
 
 /** tests parallel methods of java.util.Arrays for ints and Integer objects */
-@RunWith(JQF.class)
+//@RunWith(JQF.class)
 public class ArraysParallelTest {
     protected static final int MAX_SIZE = 160;
     protected static final int MIN_ELEMENT = 0;
     protected static final int MAX_ELEMENT = 10;
 
-    @Fuzz
+    //@Fuzz
     public void testSort(@Size(max=MAX_SIZE) List<@InRange(minInt=MIN_ELEMENT, maxInt=MAX_ELEMENT) Integer> input) {
         //Integer[] arr = input.toArray(new Integer[0]);
         //Arrays.parallelSort(arr, Integer::compareTo);
@@ -33,7 +33,7 @@ public class ArraysParallelTest {
         }
     }
 
-    @Fuzz
+    //@Fuzz
     public void testPrefix(@Size(max=MAX_SIZE) List<@InRange(minInt=MIN_ELEMENT, maxInt=MAX_ELEMENT) Integer> input) {
         Integer[] arr = input.toArray(new Integer[0]);
         //Arrays.parallelPrefix(arr, (int1, int2) -> int1 + 1);

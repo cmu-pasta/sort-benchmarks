@@ -15,7 +15,6 @@ public class CounterScheduleGenerator extends Generator<ListSchedule> {
 
     @Override
     public ListSchedule generate(SourceOfRandomness sourceOfRandomness, GenerationStatus generationStatus) {
-        //TODO write integration tests with different seeds on the source of randomness
         int seed = num++;//sourceOfRandomness.seed();
         System.out.println("sourceOfRandomness " + sourceOfRandomness + " with seed " + seed);
         switch (seed) {

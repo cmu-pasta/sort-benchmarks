@@ -4,12 +4,13 @@ import cmu.pasta.cdiff.ListSchedule;
 import com.pholser.junit.quickcheck.From;
 import edu.berkeley.cs.jqf.fuzz.Fuzz;
 import edu.berkeley.cs.jqf.fuzz.JQF;
+import org.junit.Ignore;
 import org.junit.runner.RunWith;
 import static org.junit.Assert.assertEquals;
 
 @RunWith(JQF.class)
 public class CounterTest {
-    @Fuzz
+    @Fuzz //@Ignore
     public void testIncDec(String s, @From(CounterScheduleGenerator.class) ListSchedule schedule) throws InterruptedException {
         System.out.println("schedule: " + schedule + "(size > 5? " + (schedule.size() > 5) + ")");
         CounterMap cm = new CounterMap();

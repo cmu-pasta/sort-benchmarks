@@ -1,6 +1,9 @@
 package concurrency;
 
-public class Thread extends java.lang.Thread {
+import cmu.pasta.cdiff.*;
+
+//TODO put this in the other repo?
+public class Thread extends StatefulThread {
     public Thread(Runnable r) {
         super(r);
     }

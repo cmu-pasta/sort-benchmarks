@@ -7,7 +7,7 @@ import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 
 public class RandomScheduleGenerator extends Generator<RandomSchedule> {
 
-    protected RandomScheduleGenerator() {
+    public RandomScheduleGenerator() {
         super(RandomSchedule.class);
     }
 

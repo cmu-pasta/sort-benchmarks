@@ -1,9 +1,4 @@
-package concurrency;
-
-import concurrency.experiments.ConcurrencyBytecode;
-import edu.berkeley.cs.jqf.fuzz.Fuzz;
-import edu.berkeley.cs.jqf.fuzz.JQF;
-import org.junit.runner.RunWith;
+package concurrency.experiments;
 
 //@RunWith(JQF.class)
 public class ConcurrencyBytecodeTest {

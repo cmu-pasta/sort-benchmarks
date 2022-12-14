@@ -10,13 +10,13 @@ import static org.junit.Assert.assertEquals;
 
 @RunWith(JQF.class)
 public class CounterTest {
-    @Fuzz //@Ignore
+    @Fuzz @Ignore
     public void testIncDec(String s, @From(CounterScheduleGenerator.class) ListSchedule schedule) throws InterruptedException {
         System.out.println("schedule: " + schedule + "(size > 5? " + (schedule.size() > 5) + ")");
         CounterMap cm = new CounterMap();
 
-        concurrency.Thread t1 = new Thread(() -> cm.putOrIncrement(s));
-        concurrency.Thread t2 = new Thread(() -> cm.putOrDecrement(s));
+        concurrency.Thread t1 = new concurrency.Thread(() -> cm.putOrIncrement(s));
+        concurrency.Thread t2 = new concurrency.Thread(() -> cm.putOrDecrement(s));
         t1.start();
         t2.start();
         t1.join();

@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class CounterMap {
-    private Map<String, Integer> map;
+    private final Map<String, Integer> map;
     public final Object LOCK = "LOCK";
 
     public CounterMap() {
@@ -14,9 +14,11 @@ public class CounterMap {
     public void putOrIncrement(String s) {
         System.out.println("[Thread " + java.lang.Thread.currentThread() + "] putOrIncrement");
         if(containsKey(s)) {
+            System.out.println("finished containsKey");
             putValue(s, getValue(s) + 1);
             System.out.println("[Thread " + java.lang.Thread.currentThread() + "] key already present");
         } else {
+            System.out.println("finished containsKey");
             putValue(s, 1);
             System.out.println("[Thread " + java.lang.Thread.currentThread() + "] key not present");
         }
@@ -25,9 +27,11 @@ public class CounterMap {
     public void putOrDecrement(String s) {
         System.out.println("[Thread " + java.lang.Thread.currentThread() + "] putOrDecrement");
         if(containsKey(s)) {
+            System.out.println("finished containsKey");
             putValue(s, getValue(s) - 1);
             System.out.println("[Thread " + java.lang.Thread.currentThread() + "] key already present");
         } else {
+            System.out.println("finished containsKey");
             putValue(s, -1);
             System.out.println("[Thread " + java.lang.Thread.currentThread() + "] key not present");
         }

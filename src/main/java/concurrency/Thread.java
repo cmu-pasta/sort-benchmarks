@@ -1,6 +1,6 @@
 package concurrency;
 
-import cmu.pasta.cdiff.*;
+import cmu.pasta.cdiff.StatefulThread;
 
 //TODO put this in the other repo?
 public class Thread extends StatefulThread {

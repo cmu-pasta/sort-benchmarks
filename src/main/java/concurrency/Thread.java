@@ -12,4 +12,10 @@ public class Thread extends StatefulThread {
     public void start() {
         super.start();
     }
+
+    @Override
+    public void run() {
+        //needed in order to make created threads get instrumented by SingleSnoop
+        super.run();
+    }
 }

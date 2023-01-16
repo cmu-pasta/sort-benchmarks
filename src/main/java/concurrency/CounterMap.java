@@ -4,23 +4,28 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class CounterMap {
-    private final Map<String, Integer> map;
+    Integer updateMe;
     public final Object LOCK = "LOCK";
 
     public CounterMap() {
-        map = new HashMap<>();
+        updateMe = null;
     }
 
     public void putOrIncrement(String s) {
         System.out.println("[Thread " + java.lang.Thread.currentThread() + "] putOrIncrement");
         if(containsKey(s)) {
             System.out.println("finished containsKey");
-            putValue(s, getValue(s) + 1);
-            System.out.println("[Thread " + java.lang.Thread.currentThread() + "] key already present");
+            synchronized(LOCK) {
+                updateMe = updateMe + 1;
+            }
+
+            System.out.println("[putOrIncrement] key already present");
         } else {
             System.out.println("finished containsKey");
-            putValue(s, 1);
-            System.out.println("[Thread " + java.lang.Thread.currentThread() + "] key not present");
+            synchronized(LOCK) {
+                updateMe = 1;
+            }
+            System.out.println("[putOrIncrement] key not present");
         }
     }
 
@@ -28,38 +33,43 @@ public class CounterMap {
         System.out.println("[Thread " + java.lang.Thread.currentThread() + "] putOrDecrement");
         if(containsKey(s)) {
             System.out.println("finished containsKey");
-            putValue(s, getValue(s) - 1);
-            System.out.println("[Thread " + java.lang.Thread.currentThread() + "] key already present");
+            synchronized(LOCK) {
+                updateMe = updateMe - 1;
+            }
+            //AND HERE???
+            //is the blocking thing monitorEXIT?
+            System.out.println("[putOrDecrement] key already present");
         } else {
             System.out.println("finished containsKey");
-            putValue(s, -1);
-            System.out.println("[Thread " + java.lang.Thread.currentThread() + "] key not present");
+            synchronized(LOCK) {
+                updateMe = -1;
+            }
+            System.out.println("[putOrDecrement] key not present");
+            //SOMETHING BLOCKING HAPPENS HERE (?????)
         }
     }
 
     public int getValue(String s) {
         synchronized (LOCK) {
-            System.out.println("[Thread " + java.lang.Thread.currentThread() + "] getValue");
-            Integer toReturn;
-            toReturn = map.get(s);
-            if(toReturn == null) return Integer.MIN_VALUE;
-            System.out.println("[Thread " + java.lang.Thread.currentThread() + "] got value " + toReturn);
-            return toReturn;
+            System.out.println("getValue");
+            if(updateMe == null) return Integer.MIN_VALUE;
+            System.out.println("got value " + updateMe);
+            return updateMe;
         }
     }
 
-    public void putValue(String s, Integer i) {
+    /*public void putValue(String s, Integer i) {
         synchronized (LOCK) {
             System.out.println("[Thread " + java.lang.Thread.currentThread() + "] putValue");
             map.put(s, i);
             System.out.println("[Thread " + java.lang.Thread.currentThread() + "] put value " + i);
         }
-    }
+    }*/
 
     public boolean containsKey(String s) {
         synchronized (LOCK) {
-            System.out.println("[Thread " + java.lang.Thread.currentThread() + "] containsKey");
-            return map.containsKey(s);
+            System.out.println("containsKey");
+            return updateMe != null;
         }
     }
 }

@@ -69,10 +69,22 @@ public class ClosureTest {
         return compiler.toSource();
     }
 
+    @Diff(cmp = "noncompare")
+    public String testWithGeneratorNoncompare(@From(JavaScriptCodeGenerator.class) String code) {
+        testWithString(code);
+        return compiler.toSource();
+    }
+
     @Fuzz(repro="${repro}")
     public void fuzzWithGenerator(@From(JavaScriptCodeGenerator.class) String code) {
         testWithString(code);
         compiler.toSource();
     }
+
+    @Comparison
+    public static Boolean noncompare(String s1, String s2) {
+        return true;
+    }
+
 
 }

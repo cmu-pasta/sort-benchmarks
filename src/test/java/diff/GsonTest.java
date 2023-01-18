@@ -1,6 +1,7 @@
 package diff;
 
 import cmu.pasta.mu2.diff.Diff;
+import cmu.pasta.mu2.diff.Comparison;
 import cmu.pasta.mu2.diff.Mu2;
 
 import com.google.gson.Gson;
@@ -42,6 +43,24 @@ public class GsonTest {
         } catch (JsonIOException e) {
             Assume.assumeNoException(e);
         }
+    }
+
+    @Diff(cmp = "noncompare")
+    public Object testJSONParserNoncompare(@From(AsciiStringGenerator.class) String input) {
+        Object out = null;
+        try {
+            out = gson.fromJson(input, Object.class);
+        } catch (JsonSyntaxException e) {
+            Assume.assumeNoException(e);
+        } catch (JsonIOException e) {
+            Assume.assumeNoException(e);
+        }
+        return out;
+    }
+
+    @Comparison
+    public static Boolean noncompare(Object o1, Object o2) {
+        return true;
     }
 
 }

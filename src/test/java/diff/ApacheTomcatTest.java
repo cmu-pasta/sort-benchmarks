@@ -60,4 +60,14 @@ public class ApacheTomcatTest {
     public void testWithString(String input){
         testWithInputStream(new ByteArrayInputStream(input.getBytes()));
     }
+
+    @Diff(cmp = "noncompare")
+    public String testWithGeneratorNoncompare(@From(XmlDocumentGenerator.class) @Dictionary("dictionaries/tomcat-webxml.dict") Document dom) {
+        return testWithInputStream(XMLDocumentUtils.documentToInputStream(dom));
+    }
+
+    @Comparison
+    public static Boolean noncompare(String s1, String s2) {
+        return true;
+    }
 }

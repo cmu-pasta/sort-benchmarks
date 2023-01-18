@@ -1,6 +1,7 @@
 package diff;
 
 import cmu.pasta.mu2.diff.Diff;
+import cmu.pasta.mu2.diff.Comparison;
 import cmu.pasta.mu2.diff.Mu2;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -37,5 +38,21 @@ public class JacksonDatabindTest{
         } catch (JsonProcessingException e) {
            Assume.assumeNoException(e);
         }
+    }
+
+    @Diff(cmp = "noncompare")
+    public Object testJsonReadValueNoncompare(@From(AsciiStringGenerator.class) String input) {
+        Object output = null;
+        try {
+            output = objectMapper.readValue(input, Object.class);
+        } catch (JsonProcessingException e) {
+           Assume.assumeNoException(e);
+        }
+        return output;
+    }
+
+    @Comparison
+    public static Boolean noncompare(Object o1, Object o2) {
+        return true;
     }
 }

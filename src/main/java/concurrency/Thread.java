@@ -18,4 +18,9 @@ public class Thread extends StatefulThread {
         //needed in order to make created threads get instrumented by SingleSnoop
         super.run();
     }
+
+    @Override
+    public void newJoin() throws InterruptedException {
+        super.newJoin();
+    }
 }

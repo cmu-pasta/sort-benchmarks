@@ -21,8 +21,10 @@ public class CounterTest {
             t1.start();
             t2.start();
             try {
-                t1.join();
-                t2.join();
+                System.out.println("joining t1");
+                t1.newJoin();
+                System.out.println("joining t2");
+                t2.newJoin();
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
@@ -33,7 +35,7 @@ public class CounterTest {
             else assertEquals(1, cm.getValue(s));
         });
         t.start();
-        t.join();
+        t.newJoin();
         //Thread.sleep(3000);
     }
 }

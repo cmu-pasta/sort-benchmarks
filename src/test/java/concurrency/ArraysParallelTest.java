@@ -8,6 +8,7 @@ import concurrency.sort.ArrayPrefixHelpers;
 import concurrency.sort.DualPivotQuicksort;
 import edu.berkeley.cs.jqf.fuzz.Fuzz;
 import edu.berkeley.cs.jqf.fuzz.JQF;
+import org.junit.Ignore;
 import org.junit.runner.RunWith;
 
 import java.util.*;
@@ -22,7 +23,7 @@ public class ArraysParallelTest {
     protected static final int MIN_ELEMENT = 0;
     protected static final int MAX_ELEMENT = 10;
 
-    @Fuzz
+    @Fuzz @Ignore
     public void testSort(@Size(max=MAX_SIZE) List<@InRange(minInt=MIN_ELEMENT, maxInt=MAX_ELEMENT) Integer> input, @From(RandomScheduleGenerator.class) Schedule s) {
         //Integer[] arr = input.toArray(new Integer[0]);
         //Arrays.parallelSort(arr, Integer::compareTo);

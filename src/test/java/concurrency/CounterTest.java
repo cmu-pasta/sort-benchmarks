@@ -10,7 +10,7 @@ import static org.junit.Assert.assertEquals;
 
 @RunWith(JQF.class)
 public class CounterTest {
-    @Fuzz //@Ignore
+    @Fuzz
     public void testIncDec(String s, @From(CounterScheduleGenerator.class) ListSchedule schedule) throws InterruptedException {
         Thread t = new Thread(() -> {
             System.out.println("schedule: " + schedule + "(size > 5? " + (schedule.size() > 5) + ")");
@@ -31,11 +31,10 @@ public class CounterTest {
 
             System.out.println("schedule: " + schedule + "(size > 5? " + (schedule.size() > 5) + ")");
             if (schedule.size() > 5) assertEquals(0, cm.getValue(s));
-            else if (schedule.deepCopy().next() == 0) assertEquals(-1, cm.getValue(s));
+            else if (((ListSchedule) schedule.deepCopy()).firstIndex() == 0) assertEquals(-1, cm.getValue(s));
             else assertEquals(1, cm.getValue(s));
         });
         t.start();
         t.newJoin();
-        //Thread.sleep(3000);
     }
 }

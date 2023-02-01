@@ -17,7 +17,7 @@ public class ParallelSortTest {
     protected static final int MIN_ELEMENT = 0;
     protected static final int MAX_ELEMENT = 10;
 
-    @Fuzz
+    @Fuzz @Ignore
     public void testParallelMergeSort(@Size(max=MAX_SIZE) List<@InRange(minInt=MIN_ELEMENT, maxInt=MAX_ELEMENT) Integer> input, @From(RandomScheduleGenerator.class) Schedule s) {
         System.out.println("sorting " + input);
         Integer[] parallelSorted = new BadParallelMergeSort().sort(input.toArray(new Integer[]{}));

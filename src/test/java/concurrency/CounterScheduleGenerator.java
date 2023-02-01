@@ -18,10 +18,10 @@ public class CounterScheduleGenerator extends Generator<ListSchedule> {
         int seed = num++;//sourceOfRandomness.seed();
         System.out.println("sourceOfRandomness " + sourceOfRandomness + " with seed " + seed);
         switch (seed) {
-            //case 0: return new ListSchedule(List.of(1, 1, 0, 0, 0, 0)); //t2,t2,t1,t1,t1,main
-            //case 1: return new ListSchedule(List.of(0, 0, 0, 0, 0, 0)); //t1,t1,t2,t2,t2,main
-            //case 2: return new ListSchedule(List.of(0, 1, 0, 0, 0)); //t1,t2,t1,t2,main
-            //case 3: return new ListSchedule(List.of(1, 0, 1, 0, 0)); //t2,t1,t2,t1,main
+            case 0: return new ListSchedule(List.of(1, 1, 0, 0, 0, 0)); //t2,t2,t1,t1,t1,main
+            case 1: return new ListSchedule(List.of(0, 0, 0, 0, 0, 0)); //t1,t1,t2,t2,t2,main
+            case 2: return new ListSchedule(List.of(0, 1, 0, 0, 0)); //t1,t2,t1,t2,main
+            case 3: return new ListSchedule(List.of(1, 0, 1, 0, 0)); //t2,t1,t2,t1,main
             default: return new ListSchedule(List.of(0, 0, 0, 0, 0, 0));
         }
     }

@@ -62,6 +62,7 @@ public class BadParallelMergeSort {
   private static <T extends Comparable<T>> void merge(T[] arr, int left, int mid, int right) {
     T[] temp = (T[]) new Comparable[arr.length];
     synchronized (MSLOCK) {
+      //copy whole array instead of just the half we're working with
       System.arraycopy(arr, 0, temp, 0, arr.length);
     }
     int i = left;
@@ -85,6 +86,7 @@ public class BadParallelMergeSort {
     }
 
     synchronized (MSLOCK) {
+      //bug: copying back over the old half-we-weren't-working-with
       System.arraycopy(temp, 0, arr, 0, arr.length);
     }
   }

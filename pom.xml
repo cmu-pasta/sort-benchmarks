@@ -35,6 +35,11 @@
             <artifactId>commons-collections4</artifactId>
             <version>4.3</version>
         </dependency>
+        <!--dependency>
+            <groupId>org.apache.zookeeper</groupId>
+            <artifactId>zookeeper</artifactId>
+            <version>3.8.2-SNAPSHOT</version>
+        </dependency-->
     </dependencies>
 
     <build>

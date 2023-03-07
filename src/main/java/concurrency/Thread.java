@@ -1,9 +1,9 @@
 package concurrency;
 
-import cmu.pasta.cdiff.StatefulThread;
+import cmu.pasta.cdiff.IndexedThread;
 
 //TODO put this in the other repo?
-public class Thread extends StatefulThread {
+public class Thread extends IndexedThread {
     public Thread(Runnable r) {
         super(r);
     }

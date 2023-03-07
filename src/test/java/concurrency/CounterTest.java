@@ -14,7 +14,7 @@ import static org.junit.Assert.assertEquals;
 
 @RunWith(JQF.class)
 public class CounterTest {
-    @Fuzz @Ignore
+    @Fuzz //@Ignore
     public void testIncDec(String s, @From(CounterScheduleGenerator.class) ListSchedule schedule) throws InterruptedException {
         Thread t = new Thread(() -> {
             //System.out.println("schedule: " + schedule + "(size > 5? " + (schedule.size() > 5) + ")");

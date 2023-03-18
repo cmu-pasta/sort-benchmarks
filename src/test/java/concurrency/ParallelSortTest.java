@@ -1,5 +1,6 @@
 package concurrency;
 
+import cmu.pasta.cdiff.IndexedThread;
 import cmu.pasta.cdiff.Schedule;
 import com.pholser.junit.quickcheck.From;
 import com.pholser.junit.quickcheck.generator.InRange;
@@ -21,7 +22,7 @@ public class ParallelSortTest {
 
     @Fuzz @Ignore
     public void testBadParallelMergeSort(@Size(max=MAX_SIZE) List<@InRange(minInt=MIN_ELEMENT, maxInt=MAX_ELEMENT) Integer> input, @From(RandomScheduleGenerator.class) Schedule s) throws InterruptedException {
-        Thread t = new Thread(() -> {
+        IndexedThread t = new IndexedThread(() -> {
             //System.out.println("sorting " + input + " with schedule " + s);
             Integer[] parallelSorted = new BadParallelMergeSort().sort(input.toArray(new Integer[]{}));
             List<Integer> other = new ArrayList<>(input);
@@ -44,7 +45,7 @@ public class ParallelSortTest {
 
     @Fuzz @Ignore
     public void testGoodParallelMergeSort(@Size(max=MAX_SIZE) List<@InRange(minInt=MIN_ELEMENT, maxInt=MAX_ELEMENT) Integer> input, @From(RandomScheduleGenerator.class) Schedule s) throws InterruptedException {
-        Thread t = new Thread(() -> {
+        IndexedThread t = new IndexedThread(() -> {
             //System.out.println("sorting " + input + " with schedule " + s);
             Integer[] parallelSorted = new ParallelMergeSort().sort(input.toArray(new Integer[]{}));
             List<Integer> other = new ArrayList<>(input);

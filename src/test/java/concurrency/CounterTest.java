@@ -1,5 +1,6 @@
 package concurrency;
 
+import cmu.pasta.cdiff.IndexedThread;
 import cmu.pasta.cdiff.ListSchedule;
 import com.pholser.junit.quickcheck.From;
 import edu.berkeley.cs.jqf.fuzz.Fuzz;
@@ -16,12 +17,12 @@ import static org.junit.Assert.assertEquals;
 public class CounterTest {
     @Fuzz @Ignore
     public void testIncDec(String s, @From(CounterScheduleGenerator.class) ListSchedule schedule) throws InterruptedException {
-        Thread t = new Thread(() -> {
+        IndexedThread t = new IndexedThread(() -> {
             //System.out.println("schedule: " + schedule + "(size > 5? " + (schedule.size() > 5) + ")");
             CounterMap cm = new CounterMap();
 
-            Thread t1 = new Thread(() -> cm.putOrIncrement(s));
-            Thread t2 = new Thread(() -> cm.putOrDecrement(s));
+            IndexedThread t1 = new IndexedThread(() -> cm.putOrIncrement(s));
+            IndexedThread t2 = new IndexedThread(() -> cm.putOrDecrement(s));
             t1.start();
             t2.start();
             try {

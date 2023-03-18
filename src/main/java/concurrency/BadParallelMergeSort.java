@@ -1,5 +1,7 @@
 package concurrency;
 
+import cmu.pasta.cdiff.IndexedThread;
+
 /** modification of the other mergesort*/
 public class BadParallelMergeSort {
   static final Object MSLOCK = "MERGESORTLOCK";
@@ -29,14 +31,14 @@ public class BadParallelMergeSort {
     if (left < right) {
       int mid = left + (right - left) / 2;
 
-      Thread t1 = new Thread(() -> {
+      IndexedThread t1 = new IndexedThread(() -> {
         try {
           doSort(arr, left, mid);
         } catch (InterruptedException e) {
           throw new RuntimeException(e);
         }
       });
-      Thread t2 = new Thread(() -> {
+      IndexedThread t2 = new IndexedThread(() -> {
         try {
           doSort(arr, mid + 1, right);
         } catch (InterruptedException e) {

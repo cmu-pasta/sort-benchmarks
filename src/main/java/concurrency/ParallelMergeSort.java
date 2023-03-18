@@ -1,5 +1,7 @@
 package concurrency;
 
+import cmu.pasta.cdiff.IndexedThread;
+
 /** modification of the other mergesort*/
 public class ParallelMergeSort {
   static final Object MSLOCK = "MERGESORTLOCK";
@@ -29,14 +31,14 @@ public class ParallelMergeSort {
     if (left < right) {
       int mid = left + (right - left) / 2;
 
-      concurrency.Thread t1 = new concurrency.Thread(() -> {
+      IndexedThread t1 = new IndexedThread(() -> {
         try {
           doSort(arr, left, mid);
         } catch (InterruptedException e) {
           throw new RuntimeException(e);
         }
       });
-      concurrency.Thread t2 = new concurrency.Thread(() -> {
+      IndexedThread t2 = new IndexedThread(() -> {
         try {
           doSort(arr, mid + 1, right);
         } catch (InterruptedException e) {

@@ -20,7 +20,7 @@ public class ParallelSortTest {
     protected static final int MIN_ELEMENT = 0;
     protected static final int MAX_ELEMENT = 10;
 
-    @Fuzz @Ignore
+    @Fuzz //@Ignore
     public void testBadParallelMergeSort(@Size(max=MAX_SIZE) List<@InRange(minInt=MIN_ELEMENT, maxInt=MAX_ELEMENT) Integer> input, @From(RandomScheduleGenerator.class) Schedule s) throws InterruptedException {
         IndexedThread t = new IndexedThread(() -> {
             //System.out.println("sorting " + input + " with schedule " + s);
@@ -32,18 +32,10 @@ public class ParallelSortTest {
             }
             //System.out.println("got " + Arrays.toString(parallelSorted));
         });
-        Map<String, Throwable> exceptions = new HashMap<>();
-        t.setUncaughtExceptionHandler((t1, e) -> exceptions.put(t1 + "with:\nList " + input + "\nSchedule " + s + "\n", e));
         t.start();
-        t.newJoin();
-        for(Map.Entry<String, Throwable> entry : exceptions.entrySet()) {
-            RuntimeException re = new RuntimeException(entry.getKey() + " threw " + entry.getValue());
-            re.setStackTrace(entry.getValue().getStackTrace());
-            throw re;
-        }
     }
 
-    @Fuzz @Ignore
+    @Fuzz //@Ignore
     public void testGoodParallelMergeSort(@Size(max=MAX_SIZE) List<@InRange(minInt=MIN_ELEMENT, maxInt=MAX_ELEMENT) Integer> input, @From(RandomScheduleGenerator.class) Schedule s) throws InterruptedException {
         IndexedThread t = new IndexedThread(() -> {
             //System.out.println("sorting " + input + " with schedule " + s);
@@ -55,14 +47,6 @@ public class ParallelSortTest {
             }
             //System.out.println("got " + Arrays.toString(parallelSorted));
         });
-        Map<String, Throwable> exceptions = new HashMap<>();
-        t.setUncaughtExceptionHandler((t1, e) -> exceptions.put(t1 + "with:\nList " + input + "\nSchedule " + s + "\n", e));
         t.start();
-        t.newJoin();
-        for(Map.Entry<String, Throwable> entry : exceptions.entrySet()) {
-            RuntimeException re = new RuntimeException(entry.getKey() + " threw " + entry.getValue());
-            re.setStackTrace(entry.getValue().getStackTrace());
-            throw re;
-        }
     }
 }

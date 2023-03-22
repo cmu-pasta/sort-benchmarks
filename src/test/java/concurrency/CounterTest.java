@@ -15,10 +15,10 @@ import static org.junit.Assert.assertEquals;
 
 @RunWith(JQF.class)
 public class CounterTest {
-    @Fuzz @Ignore
+    @Fuzz //@Ignore
     public void testIncDec(String s, @From(CounterScheduleGenerator.class) ListSchedule schedule) throws InterruptedException {
         IndexedThread t = new IndexedThread(() -> {
-            //System.out.println("schedule: " + schedule + "(size > 5? " + (schedule.size() > 5) + ")");
+            System.out.println("schedule: " + schedule + " (first val " + ((ListSchedule) schedule.deepCopy()).firstIndex() + ")");
             CounterMap cm = new CounterMap();
 
             IndexedThread t1 = new IndexedThread(() -> cm.putOrIncrement(s));
@@ -47,14 +47,6 @@ public class CounterTest {
                     break;
             }
         });
-        Map<String, Throwable> exceptions = new HashMap<>();
-        t.setUncaughtExceptionHandler((t1, e) -> exceptions.put(t1 + "with:\nSchedule " + schedule + "\n", e));
         t.start();
-        t.newJoin();
-        for(Map.Entry<String, Throwable> entry : exceptions.entrySet()) {
-            RuntimeException re = new RuntimeException(entry.getKey() + " threw " + entry.getValue());
-            re.setStackTrace(entry.getValue().getStackTrace());
-            throw re;
-        }
     }
 }

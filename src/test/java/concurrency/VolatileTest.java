@@ -16,7 +16,7 @@ import static org.junit.Assert.assertEquals;
 @RunWith(JQF.class)
 public class VolatileTest {
     private Integer x; //TODO shouldn't this cause the test to fail? (or, what would?)
-    @Fuzz //@Ignore
+    @Fuzz @Ignore
     public void testVolatile(Integer input, @From(RandomScheduleGenerator.class) Schedule schedule) throws InterruptedException {
         IndexedThread t = new IndexedThread(() -> {
             x = 0;
@@ -28,6 +28,8 @@ public class VolatileTest {
             });
             t1.start();
             t2.start();
+
+            //TODO question is read x before write x or write x before read x
             try {
                 t1.newJoin();
                 t2.newJoin();

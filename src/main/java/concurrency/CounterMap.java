@@ -1,26 +1,29 @@
 package concurrency;
 
+import java.util.concurrent.ConcurrentHashMap;
+
 public class CounterMap {
-    Integer updateMe;
+    ConcurrentHashMap<String, Integer> updateMe;
+    //TODO adjust when we do start adding java/util/concurrent
+    //TODO actually just turn this into the first volatile test
     public final Object LOCK = "LOCK";
 
     public CounterMap() {
-        updateMe = null;
+        updateMe = new ConcurrentHashMap<>();
     }
 
     public void putOrIncrement(String s) {
-        //System.out.println("[Thread " + java.lang.Thread.currentThread() + "] putOrIncrement");
         if(containsKey(s)) {
             //System.out.println("finished containsKey");
             synchronized(LOCK) {
-                updateMe = updateMe + 1;
+                updateMe.put("hello", updateMe.get("hello") + 1);
             }
 
             //System.out.println("[putOrIncrement] key already present");
         } else {
             //System.out.println("finished containsKey");
             synchronized(LOCK) {
-                updateMe = 1;
+                updateMe.put("hello", 1);
             }
             //System.out.println("[putOrIncrement] key not present");
         }
@@ -31,13 +34,13 @@ public class CounterMap {
         if(containsKey(s)) {
             //System.out.println("finished containsKey");
             synchronized(LOCK) {
-                updateMe = updateMe - 1;
+                updateMe.put("hello", updateMe.get("hello") - 1);
             }
             //System.out.println("[putOrDecrement] key already present");
         } else {
             //System.out.println("finished containsKey");
             synchronized(LOCK) {
-                updateMe = -1;
+                updateMe.put("hello", -1);
             }
             //System.out.println("[putOrDecrement] key not present");
         }
@@ -46,16 +49,16 @@ public class CounterMap {
     public int getValue(String s) {
         synchronized (LOCK) {
             //System.out.println("getValue");
-            if(updateMe == null) return Integer.MIN_VALUE;
+            if(!updateMe.containsKey("hello")) return Integer.MIN_VALUE;
             //System.out.println("got value " + updateMe);
-            return updateMe;
+            return updateMe.get("hello");
         }
     }
 
     public boolean containsKey(String s) {
         synchronized (LOCK) {
             //System.out.println("containsKey");
-            return updateMe != null;
+            return updateMe.containsKey("hello");
         }
     }
 }

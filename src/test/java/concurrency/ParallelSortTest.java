@@ -1,7 +1,6 @@
 package concurrency;
 
-import cmu.pasta.cdiff.IndexedThread;
-import cmu.pasta.cdiff.Schedule;
+import cmu.pasta.cdiff.schedule.Schedule;
 import com.pholser.junit.quickcheck.From;
 import com.pholser.junit.quickcheck.generator.InRange;
 import com.pholser.junit.quickcheck.generator.Size;

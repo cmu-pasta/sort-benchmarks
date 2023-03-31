@@ -1,15 +1,12 @@
 package concurrency;
 
 import cmu.pasta.cdiff.IndexedThread;
-import cmu.pasta.cdiff.ListSchedule;
+import cmu.pasta.cdiff.schedule.ListSchedule;
 import com.pholser.junit.quickcheck.From;
 import edu.berkeley.cs.jqf.fuzz.Fuzz;
 import edu.berkeley.cs.jqf.fuzz.JQF;
 import org.junit.Ignore;
 import org.junit.runner.RunWith;
-
-import java.util.HashMap;
-import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
 

@@ -1,7 +1,7 @@
 package concurrency;
 
 import cmu.pasta.cdiff.IndexedThread;
-import cmu.pasta.cdiff.ListSchedule;
+import cmu.pasta.cdiff.schedule.ListSchedule;
 import com.pholser.junit.quickcheck.From;
 import edu.berkeley.cs.jqf.fuzz.Fuzz;
 import edu.berkeley.cs.jqf.fuzz.JQF;

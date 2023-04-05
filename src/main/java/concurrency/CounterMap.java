@@ -1,15 +1,13 @@
 package concurrency;
 
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.HashMap;
 
 public class CounterMap {
-    ConcurrentHashMap<String, Integer> updateMe;
-    //TODO adjust when we do start adding java/util/concurrent
-    //TODO actually just turn this into the first volatile test
+    HashMap<String, Integer> updateMe;
     public final Object LOCK = "LOCK";
 
     public CounterMap() {
-        updateMe = new ConcurrentHashMap<>();
+        updateMe = new HashMap<>();
     }
 
     public void putOrIncrement(String s) {

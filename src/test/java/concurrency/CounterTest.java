@@ -1,6 +1,6 @@
 package concurrency;
 
-import cmu.pasta.cdiff.IndexedThread;
+import cmu.pasta.cdiff.overrides.InstrumentedThread;
 import cmu.pasta.cdiff.schedule.ListSchedule;
 import com.pholser.junit.quickcheck.From;
 import edu.berkeley.cs.jqf.fuzz.Fuzz;
@@ -18,15 +18,15 @@ public class CounterTest {
         //System.out.println("schedule: " + schedule + " (first val " + ((ListSchedule) schedule.deepCopy()).firstIndex() + ")");
         CounterMap cm = new CounterMap();
 
-        IndexedThread t1 = new IndexedThread(() -> cm.putOrIncrement(s));
-        IndexedThread t2 = new IndexedThread(() -> cm.putOrDecrement(s));
+        InstrumentedThread t1 = new InstrumentedThread(() -> cm.putOrIncrement(s));
+        InstrumentedThread t2 = new InstrumentedThread(() -> cm.putOrDecrement(s));
         t1.start();
         t2.start();
         try {
             //System.out.println("joining t1");
-            t1.newJoin();
+            t1.join();
             //System.out.println("joining t2");
-            t2.newJoin();
+            t2.join();
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }

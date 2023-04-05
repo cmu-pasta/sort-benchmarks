@@ -19,7 +19,7 @@ public class LockTest {
     private static final String KEY = "KEY";
     private HashMap<String, Integer> map;
     @Fuzz @Ignore
-    public void testReentrantLock(Integer input, @From(ReentrantLockScheduleGenerator.class) ListSchedule schedule) throws InterruptedException {
+    public void testReentrantLock(Integer input, @From(LockScheduleGenerator.class) ListSchedule schedule) throws InterruptedException {
         map = new HashMap<>();
         InstrumentedReentrantLock rl = new InstrumentedReentrantLock(); //TODO also deal with the lock's reentrantness (if can debug)
         InstrumentedThread t1 = new InstrumentedThread(() -> {

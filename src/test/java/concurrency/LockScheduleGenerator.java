@@ -7,10 +7,10 @@ import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 
 import java.util.List;
 
-public class ReentrantLockScheduleGenerator extends Generator<ListSchedule> {
+public class LockScheduleGenerator extends Generator<ListSchedule> {
     public static int num = 0;
 
-    public ReentrantLockScheduleGenerator() {
+    public LockScheduleGenerator() {
         super(ListSchedule.class);
     }
     @Override

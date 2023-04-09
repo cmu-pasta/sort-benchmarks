@@ -11,6 +11,11 @@ public class DoubleSyncExperiment {
         public void run() {
             synchronized("TEST") {
                 synchronized ("TEST") {
+                    try {
+                        MyThread.sleep(100);
+                    } catch (InterruptedException e) {
+                        throw new RuntimeException(e);
+                    }
                     l.add("t1");
                 }
             }
@@ -18,7 +23,7 @@ public class DoubleSyncExperiment {
     }
 
     public static void main(String[] args) {
-        Thread t1 = new MyThread();
+        MyThread t1 = new MyThread();
         t1.start();
         synchronized("TEST") {
             synchronized ("TEST") {

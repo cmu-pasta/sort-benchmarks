@@ -1,6 +1,6 @@
 package concurrency;
 
-import cmu.pasta.cdiff.schedule.ListSchedule;
+import cmu.pasta.sfuzz.schedules.ListSchedule;
 import com.pholser.junit.quickcheck.generator.GenerationStatus;
 import com.pholser.junit.quickcheck.generator.Generator;
 import com.pholser.junit.quickcheck.random.SourceOfRandomness;

@@ -1,6 +1,6 @@
 package concurrency;
 
-import cmu.pasta.cdiff.overrides.InstrumentedThread;
+import cmu.pasta.sfuzz.overrides.Thread;
 
 /** modification of the other mergesort*/
 public class ParallelMergeSort {
@@ -31,14 +31,14 @@ public class ParallelMergeSort {
     if (left < right) {
       int mid = left + (right - left) / 2;
 
-      InstrumentedThread t1 = new InstrumentedThread(() -> {
+      Thread t1 = new Thread(() -> {
         try {
           doSort(arr, left, mid);
         } catch (InterruptedException e) {
           throw new RuntimeException(e);
         }
       });
-      InstrumentedThread t2 = new InstrumentedThread(() -> {
+      Thread t2 = new Thread(() -> {
         try {
           doSort(arr, mid + 1, right);
         } catch (InterruptedException e) {

@@ -1,7 +1,7 @@
 package concurrency;
 
-import cmu.pasta.cdiff.overrides.InstrumentedThread;
-import cmu.pasta.cdiff.schedule.ListSchedule;
+import cmu.pasta.sfuzz.overrides.Thread;
+import cmu.pasta.sfuzz.schedules.ListSchedule;
 import com.pholser.junit.quickcheck.From;
 import edu.berkeley.cs.jqf.fuzz.Fuzz;
 import edu.berkeley.cs.jqf.fuzz.JQF;
@@ -17,12 +17,12 @@ public class VolatileTest {
     @Fuzz @Ignore
     public void testVolatile(Integer input, @From(VolatileScheduleGenerator.class) ListSchedule schedule) throws InterruptedException {
         x = 0;
-        InstrumentedThread t1 = new InstrumentedThread(() -> {
+        Thread t1 = new Thread(() -> {
             int y = x;
             y += input;
             x = y;
         });
-        InstrumentedThread t2 = new InstrumentedThread(() -> {
+        Thread t2 = new Thread(() -> {
             int y = x;
             y -= input;
             x = y;

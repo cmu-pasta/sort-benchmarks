@@ -1,7 +1,8 @@
 package concurrency;
 
-import cmu.pasta.cdiff.overrides.InstrumentedThread;
-import cmu.pasta.cdiff.schedule.ListSchedule;
+import cmu.pasta.sfuzz.overrides.Thread;
+import cmu.pasta.sfuzz.overrides.ReentrantLock;
+import cmu.pasta.sfuzz.schedules.ListSchedule;
 import com.pholser.junit.quickcheck.From;
 import edu.berkeley.cs.jqf.fuzz.Fuzz;
 import edu.berkeley.cs.jqf.fuzz.JQF;
@@ -10,7 +11,6 @@ import org.junit.runner.RunWith;
 
 import java.util.HashMap;
 
-import cmu.pasta.cdiff.overrides.InstrumentedReentrantLock;
 
 import static org.junit.Assert.assertEquals;
 
@@ -21,8 +21,8 @@ public class LockTest {
     @Fuzz @Ignore
     public void testReentrantLock(Integer input, @From(LockScheduleGenerator.class) ListSchedule schedule) throws InterruptedException {
         map = new HashMap<>();
-        InstrumentedReentrantLock rl = new InstrumentedReentrantLock(); //TODO also deal with the lock's reentrantness (if can debug)
-        InstrumentedThread t1 = new InstrumentedThread(() -> {
+        ReentrantLock rl = new ReentrantLock(); //TODO also deal with the lock's reentrantness (if can debug)
+        Thread t1 = new Thread(() -> {
             System.out.println("starting t1");
             int val = input;
             System.out.println("t1 checking containsKey");
@@ -50,7 +50,7 @@ public class LockTest {
             System.out.println("map: " + map);
             rl.unlock();
         });
-        InstrumentedThread t2 = new InstrumentedThread(() -> {
+        Thread t2 = new Thread(() -> {
             System.out.println("starting t2");
             int val = -1 * input;
             rl.lock();

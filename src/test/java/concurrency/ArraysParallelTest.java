@@ -25,8 +25,6 @@ public class ArraysParallelTest {
 
     @Fuzz @Ignore
     public void testSort(@Size(max=MAX_SIZE) List<@InRange(minInt=MIN_ELEMENT, maxInt=MAX_ELEMENT) Integer> input, @From(RandomScheduleGenerator.class) Schedule s) {
-        //Integer[] arr = input.toArray(new Integer[0]);
-        //Arrays.parallelSort(arr, Integer::compareTo);
         int[] arr = new int[input.size()];
         for(int c = 0; c < arr.length; c++) arr[c] = input.get(c);
         DualPivotQuicksort.sort(arr, ForkJoinPool.getCommonPoolParallelism(), 0, arr.length);
@@ -37,10 +35,11 @@ public class ArraysParallelTest {
     }
 
     //@Fuzz
-    public void testPrefix(@Size(max=MAX_SIZE) List<@InRange(minInt=MIN_ELEMENT, maxInt=MAX_ELEMENT) Integer> input) {
+    public void testPrefix(@Size(max=MAX_SIZE) List<@InRange(minInt=MIN_ELEMENT, maxInt=MAX_ELEMENT) Integer> input, @From(RandomScheduleGenerator.class) Schedule s) {
         Integer[] arr = input.toArray(new Integer[0]);
         //Arrays.parallelPrefix(arr, (int1, int2) -> int1 + 1);
         if (arr.length > 0)
+            //this is reliant on pools, so this test doesn't really make sense yet
             new ArrayPrefixHelpers.CumulateTask<>
                     (null, (int1, int2) -> int1 + 1, arr, 0, arr.length).invoke();
         int init = input.get(0);

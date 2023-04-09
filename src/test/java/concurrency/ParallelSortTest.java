@@ -9,7 +9,8 @@ import edu.berkeley.cs.jqf.fuzz.JQF;
 import org.junit.Ignore;
 import org.junit.runner.RunWith;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
@@ -20,26 +21,22 @@ public class ParallelSortTest {
     protected static final int MAX_ELEMENT = 10;
 
     @Fuzz @Ignore
-    public void testBadParallelMergeSort(@Size(max=MAX_SIZE) List<@InRange(minInt=MIN_ELEMENT, maxInt=MAX_ELEMENT) Integer> input, @From(RandomScheduleGenerator.class) Schedule s) throws InterruptedException {
-        //System.out.println("sorting " + input + " with schedule " + s);
+    public void testBadParallelMergeSort(@Size(max=MAX_SIZE) List<@InRange(minInt=MIN_ELEMENT, maxInt=MAX_ELEMENT) Integer> input, @From(RandomScheduleGenerator.class) Schedule s) {
         Integer[] parallelSorted = new BadParallelMergeSort().sort(input.toArray(new Integer[]{}));
         List<Integer> other = new ArrayList<>(input);
         other.sort(Integer::compareTo);
         for (int c = 0; c < other.size(); c++) {
             assertEquals(other.get(c), parallelSorted[c]);
         }
-        //System.out.println("got " + Arrays.toString(parallelSorted));
     }
 
     @Fuzz @Ignore
-    public void testGoodParallelMergeSort(@Size(max=MAX_SIZE) List<@InRange(minInt=MIN_ELEMENT, maxInt=MAX_ELEMENT) Integer> input, @From(RandomScheduleGenerator.class) Schedule s) throws InterruptedException {
-        //System.out.println("sorting " + input + " with schedule " + s);
+    public void testGoodParallelMergeSort(@Size(max=MAX_SIZE) List<@InRange(minInt=MIN_ELEMENT, maxInt=MAX_ELEMENT) Integer> input, @From(RandomScheduleGenerator.class) Schedule s) {
         Integer[] parallelSorted = new ParallelMergeSort().sort(input.toArray(new Integer[]{}));
         List<Integer> other = new ArrayList<>(input);
         other.sort(Integer::compareTo);
         for (int c = 0; c < other.size(); c++) {
             assertEquals(other.get(c), parallelSorted[c]);
         }
-        //System.out.println("got " + Arrays.toString(parallelSorted));
     }
 }

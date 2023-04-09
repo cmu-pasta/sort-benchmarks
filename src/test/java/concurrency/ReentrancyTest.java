@@ -18,7 +18,7 @@ import static org.junit.Assert.assertEquals;
 
 @RunWith(JQF.class)
 public class ReentrancyTest {
-
+    /** hard-coded schedule generator allows for testing using the plugin, not just the integration tests*/
     public static class ReentrancyScheduleGenerator extends Generator<ListSchedule> {
         public int num = 0;
 
@@ -43,7 +43,7 @@ public class ReentrancyTest {
     private volatile int x;
 
     @Fuzz @Ignore
-    public void testSynchronizedBlock(Integer input, @From(ReentrancyScheduleGenerator.class) ListSchedule schedule) throws InterruptedException {
+    public void testSynchronizedBlock(Integer input, @From(ReentrancyScheduleGenerator.class) ListSchedule schedule) {
         //TODO could use the try-with-schedule here instead of in guidance
         String KEY = "KEY";
         x = 0;
@@ -98,7 +98,7 @@ public class ReentrancyTest {
     }
 
     @Fuzz @Ignore
-    public void testReentrantLock(Integer input, @From(ReentrancyScheduleGenerator.class) ListSchedule schedule) throws InterruptedException {
+    public void testReentrantLock(Integer input, @From(ReentrancyScheduleGenerator.class) ListSchedule schedule) {
         System.out.println("my schedule is " + schedule);
         ReentrantLock rl = new ReentrantLock();
         x = 0;

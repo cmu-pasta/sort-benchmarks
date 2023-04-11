@@ -1,5 +1,6 @@
 package concurrency;
 
+import cmu.pasta.sfuzz.instrument.Scheduler;
 import cmu.pasta.sfuzz.overrides.ReentrantLock;
 import cmu.pasta.sfuzz.overrides.Thread;
 import cmu.pasta.sfuzz.schedules.ListSchedule;
@@ -44,113 +45,115 @@ public class ReentrancyTest {
 
     @Fuzz @Ignore
     public void testSynchronizedBlock(Integer input, @From(ReentrancyScheduleGenerator.class) ListSchedule schedule) {
-        //TODO could use the try-with-schedule here instead of in guidance
-        String KEY = "KEY";
-        x = 0;
+        try(Scheduler scheduler = Scheduler.startWithSchedule(schedule)) {
+            String KEY = "KEY";
+            x = 0;
 
-        Thread t1 = new Thread(() -> {
-            int y;
-            synchronized (KEY) {
+            Thread t1 = new Thread(() -> {
+                int y;
                 synchronized (KEY) {
-                    y = x + input;
+                    synchronized (KEY) {
+                        y = x + input;
+                    }
                 }
-            }
-            synchronized (KEY) {
                 synchronized (KEY) {
-                    x = y;
+                    synchronized (KEY) {
+                        x = y;
+                    }
                 }
-            }
-        });
-        Thread t2 = new Thread(() -> {
-            int y;
-            synchronized (KEY) {
+            });
+            Thread t2 = new Thread(() -> {
+                int y;
                 synchronized (KEY) {
-                    y = x - input;
+                    synchronized (KEY) {
+                        y = x - input;
+                    }
                 }
-            }
-            synchronized (KEY) {
                 synchronized (KEY) {
-                    x = y;
+                    synchronized (KEY) {
+                        x = y;
+                    }
                 }
-            }
-        });
+            });
 
-        t1.start();
-        t2.start();
-        try {
-            t1.join();
-            t2.join();
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
+            t1.start();
+            t2.start();
+            try {
+                t1.join();
+                t2.join();
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
 
-        switch(((ListSchedule) schedule.deepCopy()).firstIndex()) {
-            case 1:
-                assertEquals(-1 * input, x);
-                break;
-            case 2:
-                assertEquals(input.intValue(), x);
-                break;
-            default:
-                assertEquals(0, x);
-                break;
+            switch (((ListSchedule) schedule.deepCopy()).firstIndex()) {
+                case 1:
+                    assertEquals(-1 * input, x);
+                    break;
+                case 2:
+                    assertEquals(input.intValue(), x);
+                    break;
+                default:
+                    assertEquals(0, x);
+                    break;
+            }
         }
     }
 
     @Fuzz @Ignore
     public void testReentrantLock(Integer input, @From(ReentrancyScheduleGenerator.class) ListSchedule schedule) {
-        System.out.println("my schedule is " + schedule);
-        ReentrantLock rl = new ReentrantLock();
-        x = 0;
+        try(Scheduler scheduler = Scheduler.startWithSchedule(schedule)) {
+            ReentrantLock rl = new ReentrantLock();
+            x = 0;
 
-        Thread t1 = new Thread(() -> {
-            int y;
-            rl.lock();
-            rl.lock();
-                    y = x + input;
-            rl.unlock();
-            rl.unlock();
+            Thread t1 = new Thread(() -> {
+                int y;
+                rl.lock();
+                rl.lock();
+                y = x + input;
+                rl.unlock();
+                rl.unlock();
 
-            rl.lock();
-            rl.lock();
-            x = y;
-            rl.unlock();
-            rl.unlock();
-        });
-        Thread t2 = new Thread(() -> {
-            int y;
-            rl.lock();
-            rl.lock();
-            y = x - input;
-            rl.unlock();
-            rl.unlock();
+                rl.lock();
+                rl.lock();
+                x = y;
+                rl.unlock();
+                rl.unlock();
+            });
+            Thread t2 = new Thread(() -> {
+                int y;
+                rl.lock();
+                rl.lock();
+                y = x - input;
+                rl.unlock();
+                rl.unlock();
 
-            rl.lock();
-            rl.lock();
-            x = y;
-            rl.unlock();
-            rl.unlock();
-        });
+                rl.lock();
+                rl.lock();
+                x = y;
+                rl.unlock();
+                rl.unlock();
+            });
 
-        t1.start();
-        t2.start();
-        try {
-            t1.join();
-            t2.join();
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
+            t1.start();
+            t2.start();
+            try {
+                t1.join();
+                t2.join();
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
 
-        switch(((ListSchedule) schedule.deepCopy()).firstIndex()) {
-            case 1:
-                assertEquals(-1 * input, x);
-                break;
-            case 2:
-                assertEquals(input.intValue(), x);
-                break;
-            default:
-                assertEquals(0, x);
-                break;
+            switch (((ListSchedule) schedule.deepCopy()).firstIndex()) {
+                case 1:
+                    assertEquals(-1 * input, x);
+                    break;
+                case 2:
+                    assertEquals(input.intValue(), x);
+                    break;
+                default:
+                    assertEquals(0, x);
+                    break;
+            }
         }
     }
 }

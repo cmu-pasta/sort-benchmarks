@@ -1,5 +1,6 @@
 package concurrency;
 
+import cmu.pasta.sfuzz.instrument.Scheduler;
 import cmu.pasta.sfuzz.overrides.Thread;
 import cmu.pasta.sfuzz.schedules.ListSchedule;
 import com.pholser.junit.quickcheck.From;
@@ -42,36 +43,38 @@ public class VolatileTest {
 
     @Fuzz @Ignore
     public void testVolatile(Integer input, @From(VolatileScheduleGenerator.class) ListSchedule schedule) {
-        x = 0;
-        Thread t1 = new Thread(() -> {
-            int y = x;
-            y += input;
-            x = y;
-        });
-        Thread t2 = new Thread(() -> {
-            int y = x;
-            y -= input;
-            x = y;
-        });
-        t1.start();
-        t2.start();
+        try(Scheduler scheduler = Scheduler.startWithSchedule(schedule)) {
+            x = 0;
+            Thread t1 = new Thread(() -> {
+                int y = x;
+                y += input;
+                x = y;
+            });
+            Thread t2 = new Thread(() -> {
+                int y = x;
+                y -= input;
+                x = y;
+            });
+            t1.start();
+            t2.start();
 
-        try {
-            t1.join();
-            t2.join();
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
-        switch(((ListSchedule) schedule.deepCopy()).firstIndex()) {
-            case 1:
-                assertEquals(-1 * input, x.intValue());
-                break;
-            case 2:
-                assertEquals(input, x);
-                break;
-            default:
-                assertEquals(0, x.intValue());
-                break;
+            try {
+                t1.join();
+                t2.join();
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+            switch (((ListSchedule) schedule.deepCopy()).firstIndex()) {
+                case 1:
+                    assertEquals(-1 * input, x.intValue());
+                    break;
+                case 2:
+                    assertEquals(input, x);
+                    break;
+                default:
+                    assertEquals(0, x.intValue());
+                    break;
+            }
         }
     }
 }

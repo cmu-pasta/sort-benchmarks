@@ -1,5 +1,7 @@
 package concurrency;
 
+import cmu.pasta.sfuzz.schedules.RandomScheduleGenerator;
+import cmu.pasta.sfuzz.instrument.Scheduler;
 import cmu.pasta.sfuzz.schedules.Schedule;
 import com.pholser.junit.quickcheck.From;
 import com.pholser.junit.quickcheck.generator.InRange;
@@ -25,26 +27,30 @@ public class ArraysParallelTest {
 
     @Fuzz @Ignore
     public void testSort(@Size(max=MAX_SIZE) List<@InRange(minInt=MIN_ELEMENT, maxInt=MAX_ELEMENT) Integer> input, @From(RandomScheduleGenerator.class) Schedule s) {
-        int[] arr = new int[input.size()];
-        for(int c = 0; c < arr.length; c++) arr[c] = input.get(c);
-        DualPivotQuicksort.sort(arr, ForkJoinPool.getCommonPoolParallelism(), 0, arr.length);
-        input.sort(Integer::compareTo);
-        for(int c = 0; c < arr.length; c++) {
-            assertEquals(input.get(c).intValue(), arr[c]);
+        try(Scheduler scheduler = Scheduler.startWithSchedule(s)) {
+            int[] arr = new int[input.size()];
+            for (int c = 0; c < arr.length; c++) arr[c] = input.get(c);
+            DualPivotQuicksort.sort(arr, ForkJoinPool.getCommonPoolParallelism(), 0, arr.length);
+            input.sort(Integer::compareTo);
+            for (int c = 0; c < arr.length; c++) {
+                assertEquals(input.get(c).intValue(), arr[c]);
+            }
         }
     }
 
     //@Fuzz
     public void testPrefix(@Size(max=MAX_SIZE) List<@InRange(minInt=MIN_ELEMENT, maxInt=MAX_ELEMENT) Integer> input, @From(RandomScheduleGenerator.class) Schedule s) {
-        Integer[] arr = input.toArray(new Integer[0]);
-        //Arrays.parallelPrefix(arr, (int1, int2) -> int1 + 1);
-        if (arr.length > 0)
-            //this is reliant on pools, so this test doesn't really make sense yet
-            new ArrayPrefixHelpers.CumulateTask<>
-                    (null, (int1, int2) -> int1 + 1, arr, 0, arr.length).invoke();
-        int init = input.get(0);
-        for(int c = 0; c < arr.length; c++) {
-            assertEquals(init + c, arr[c].intValue());
+        try(Scheduler scheduler = Scheduler.startWithSchedule(s)) {
+            Integer[] arr = input.toArray(new Integer[0]);
+            //Arrays.parallelPrefix(arr, (int1, int2) -> int1 + 1);
+            if (arr.length > 0)
+                //this is reliant on pools, so this test doesn't really make sense yet
+                new ArrayPrefixHelpers.CumulateTask<>
+                        (null, (int1, int2) -> int1 + 1, arr, 0, arr.length).invoke();
+            int init = input.get(0);
+            for (int c = 0; c < arr.length; c++) {
+                assertEquals(init + c, arr[c].intValue());
+            }
         }
     }
 

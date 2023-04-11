@@ -1,5 +1,7 @@
 package concurrency;
 
+import cmu.pasta.sfuzz.schedules.RandomScheduleGenerator;
+import cmu.pasta.sfuzz.instrument.Scheduler;
 import cmu.pasta.sfuzz.schedules.Schedule;
 import com.pholser.junit.quickcheck.From;
 import com.pholser.junit.quickcheck.generator.InRange;
@@ -22,21 +24,25 @@ public class ParallelSortTest {
 
     @Fuzz @Ignore
     public void testBadParallelMergeSort(@Size(max=MAX_SIZE) List<@InRange(minInt=MIN_ELEMENT, maxInt=MAX_ELEMENT) Integer> input, @From(RandomScheduleGenerator.class) Schedule s) {
-        Integer[] parallelSorted = new BadParallelMergeSort().sort(input.toArray(new Integer[]{}));
-        List<Integer> other = new ArrayList<>(input);
-        other.sort(Integer::compareTo);
-        for (int c = 0; c < other.size(); c++) {
-            assertEquals(other.get(c), parallelSorted[c]);
+        try(Scheduler scheduler = Scheduler.startWithSchedule(s)) {
+            Integer[] parallelSorted = new BadParallelMergeSort().sort(input.toArray(new Integer[]{}));
+            List<Integer> other = new ArrayList<>(input);
+            other.sort(Integer::compareTo);
+            for (int c = 0; c < other.size(); c++) {
+                assertEquals(other.get(c), parallelSorted[c]);
+            }
         }
     }
 
     @Fuzz @Ignore
     public void testGoodParallelMergeSort(@Size(max=MAX_SIZE) List<@InRange(minInt=MIN_ELEMENT, maxInt=MAX_ELEMENT) Integer> input, @From(RandomScheduleGenerator.class) Schedule s) {
-        Integer[] parallelSorted = new ParallelMergeSort().sort(input.toArray(new Integer[]{}));
-        List<Integer> other = new ArrayList<>(input);
-        other.sort(Integer::compareTo);
-        for (int c = 0; c < other.size(); c++) {
-            assertEquals(other.get(c), parallelSorted[c]);
+        try(Scheduler scheduler = Scheduler.startWithSchedule(s)) {
+            Integer[] parallelSorted = new ParallelMergeSort().sort(input.toArray(new Integer[]{}));
+            List<Integer> other = new ArrayList<>(input);
+            other.sort(Integer::compareTo);
+            for (int c = 0; c < other.size(); c++) {
+                assertEquals(other.get(c), parallelSorted[c]);
+            }
         }
     }
 }

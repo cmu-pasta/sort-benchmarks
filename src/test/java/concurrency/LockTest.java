@@ -1,5 +1,6 @@
 package concurrency;
 
+import cmu.pasta.sfuzz.instrument.Scheduler;
 import cmu.pasta.sfuzz.overrides.Thread;
 import cmu.pasta.sfuzz.overrides.ReentrantLock;
 import cmu.pasta.sfuzz.schedules.ListSchedule;
@@ -61,67 +62,69 @@ public class LockTest {
     private HashMap<String, Integer> map;
     @Fuzz @Ignore
     public void testReentrantLock(Integer input, @From(LockScheduleGenerator.class) ListSchedule schedule) {
-        map = new HashMap<>();
-        ReentrantLock rl = new ReentrantLock();
-        Thread t1 = new Thread(() -> {
-            int val = input;
-            rl.lock();
-            if(map.containsKey(KEY)) {
-                rl.unlock();
+        try(Scheduler scheduler = Scheduler.startWithSchedule(schedule)) {
+            map = new HashMap<>();
+            ReentrantLock rl = new ReentrantLock();
+            Thread t1 = new Thread(() -> {
+                int val = input;
+                rl.lock();
+                if (map.containsKey(KEY)) {
+                    rl.unlock();
+
+                    rl.lock();
+                    val += map.get(KEY);
+                    rl.unlock();
+                } else {
+                    rl.unlock();
+                    rl.lock();
+                    rl.unlock();
+                }
 
                 rl.lock();
-                val += map.get(KEY);
+                map.put(KEY, val);
                 rl.unlock();
-            } else {
-                rl.unlock();
+            });
+            Thread t2 = new Thread(() -> {
+                int val = -1 * input;
                 rl.lock();
+                if (map.containsKey(KEY)) {
+                    rl.unlock();
+
+                    rl.lock();
+                    val += map.get(KEY);
+                    rl.unlock();
+                } else {
+                    rl.unlock();
+                    rl.lock();
+                    rl.unlock();
+                }
+
+                rl.lock();
+                map.put(KEY, val);
                 rl.unlock();
+            });
+
+            t1.start();
+            t2.start();
+
+            try {
+                t1.newJoin();
+                t2.newJoin();
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
             }
 
-            rl.lock();
-            map.put(KEY, val);
-            rl.unlock();
-        });
-        Thread t2 = new Thread(() -> {
-            int val = -1 * input;
-            rl.lock();
-            if(map.containsKey(KEY)) {
-                rl.unlock();
-
-                rl.lock();
-                val += map.get(KEY);
-                rl.unlock();
-            } else {
-                rl.unlock();
-                rl.lock();
-                rl.unlock();
+            switch (((ListSchedule) schedule.deepCopy()).firstIndex()) {
+                case 1:
+                    assertEquals(-1 * input, map.get(KEY).intValue());
+                    break;
+                case 2:
+                    assertEquals(input, map.get(KEY));
+                    break;
+                default:
+                    assertEquals(0, map.get(KEY).intValue());
+                    break;
             }
-
-            rl.lock();
-            map.put(KEY, val);
-            rl.unlock();
-        });
-
-        t1.start();
-        t2.start();
-
-        try {
-            t1.newJoin();
-            t2.newJoin();
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
-
-        switch(((ListSchedule) schedule.deepCopy()).firstIndex()) {
-            case 1:
-                assertEquals(-1 * input, map.get(KEY).intValue());
-                break;
-            case 2:
-                assertEquals(input, map.get(KEY));
-                break;
-            default:
-                assertEquals(0, map.get(KEY).intValue());
-                break;
         }
     }
 }

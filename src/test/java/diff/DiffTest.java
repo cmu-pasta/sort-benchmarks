@@ -1,11 +1,11 @@
 package diff;
 
-import cmu.pasta.mu2.diff.Comparison;
-import cmu.pasta.mu2.diff.Diff;
-import cmu.pasta.mu2.diff.Mu2;
 import com.pholser.junit.quickcheck.generator.InRange;
 import com.pholser.junit.quickcheck.generator.Size;
 import edu.berkeley.cs.jqf.fuzz.Fuzz;
+import edu.berkeley.cs.jqf.fuzz.JQF;
+import edu.berkeley.cs.jqf.fuzz.difffuzz.Comparison;
+import edu.berkeley.cs.jqf.fuzz.difffuzz.DiffFuzz;
 import org.junit.runner.RunWith;
 import sort.BubbleSort;
 import sort.TimSort;
@@ -16,13 +16,13 @@ import java.util.List;
 import static org.junit.Assert.assertEquals;
 import static sort.SortTest.testSort;
 
-@RunWith(Mu2.class)
+@RunWith(JQF.class)
 public class DiffTest {
     protected static final int MAX_SIZE = 160;
     protected static final int MIN_ELEMENT = 0;
     protected static final int MAX_ELEMENT = 10;
 
-    @Diff(cmp = "compare")
+    @DiffFuzz(cmp = "compare")
     public List<Integer> testBubbleSort(@Size(max=MAX_SIZE) List<@InRange(minInt=MIN_ELEMENT, maxInt=MAX_ELEMENT) Integer> input) {
         List<Integer> toReturn = new BubbleSort().sort(input);
         return toReturn;
@@ -34,25 +34,25 @@ public class DiffTest {
     }
 
 
-    @Diff(cmp = "noncompare")
+    @DiffFuzz(cmp = "noncompare")
     public List<Integer> otherBubbleSort(@Size(max=MAX_SIZE) List<@InRange(minInt=MIN_ELEMENT, maxInt=MAX_ELEMENT) Integer> input) {
         testSort(new BubbleSort(), input);
         return null;
     }
 
-    @Diff(cmp = "compare")
+    @DiffFuzz(cmp = "compare")
     public List<Integer> testTimSort(@Size(max=MAX_SIZE) List<@InRange(minInt=MIN_ELEMENT, maxInt=MAX_ELEMENT) Integer> input) {
         List<Integer> toReturn = new TimSort().sort(input);
         return toReturn;
     }
 
-    @Diff(cmp = "noncompare")
+    @DiffFuzz(cmp = "noncompare")
     public List<Integer> otherTimSort(@Size(max=MAX_SIZE) List<@InRange(minInt=MIN_ELEMENT, maxInt=MAX_ELEMENT) Integer> input) {
         testSort(new TimSort(), input);
         return null;
     }
 
-    @Diff(cmp = "noncompare")
+    @DiffFuzz(cmp = "noncompare")
     public List<Integer> equalsTimSort(@Size(max=MAX_SIZE) List<@InRange(minInt=MIN_ELEMENT, maxInt=MAX_ELEMENT) Integer> input) {
         List<Integer> lst = new TimSort().sort(input);
         List<Integer> sorted = new ArrayList<>();

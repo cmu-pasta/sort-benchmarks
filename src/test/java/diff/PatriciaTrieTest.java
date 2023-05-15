@@ -1,24 +1,23 @@
 package diff;
 
-import cmu.pasta.mu2.diff.Comparison;
-import cmu.pasta.mu2.diff.Diff;
-import cmu.pasta.mu2.diff.Mu2;
-
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import edu.berkeley.cs.jqf.fuzz.JQF;
+import edu.berkeley.cs.jqf.fuzz.difffuzz.Comparison;
+import edu.berkeley.cs.jqf.fuzz.difffuzz.DiffFuzz;
 import org.apache.commons.collections4.trie.PatriciaTrie;
 import org.junit.runner.RunWith;
 
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assume.assumeTrue;
 
-@RunWith(Mu2.class)
+@RunWith(JQF.class)
 public class PatriciaTrieTest {
 
-    @Diff(cmp = "compare")
+    @DiffFuzz(cmp = "compare")
     public List<Map<String, Integer>> testPrefixMap(HashMap<String, Integer> map, String prefix) {
         assumeTrue(prefix.length() > 0);
         PatriciaTrie trie = new PatriciaTrie(map);
@@ -27,7 +26,7 @@ public class PatriciaTrieTest {
         return Arrays.asList(trie.prefixMap(prefix), tmp);
     }
 
-    @Diff(cmp = "noncompare")
+    @DiffFuzz(cmp = "noncompare")
     public List<Map<String, Integer>> otherPrefixMap(HashMap<String, Integer> map, String prefix) {
         assumeTrue(prefix.length() > 0);
         // Create new trie with input `map`
